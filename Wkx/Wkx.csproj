@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EndianBinaryReader.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Geometry.cs" />
     <Compile Include="GeometryCollection.cs" />

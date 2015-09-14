@@ -1,24 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Wkx
 {
     internal class WkbReader
     {
-        private BinaryReader wkbReader;
+        private EndianBinaryReader wkbReader;
 
         internal WkbReader(Stream stream)
         {
-            wkbReader = new BinaryReader(stream);
+            wkbReader = new EndianBinaryReader(stream);
         }
 
         internal Geometry Read()
         {
-            bool isBigEndian = wkbReader.ReadBoolean();
+            wkbReader.IsBigEndian = !wkbReader.ReadBoolean();
             GeometryType geometryType = (GeometryType)wkbReader.ReadUInt32();
 
             switch (geometryType)

@@ -39,6 +39,16 @@ namespace Wkx.Tests
 
         [Theory]
         [MemberData("TestData")]
+        public void ParseWkbXdr(TestCase testCase)
+        {
+            if (string.IsNullOrEmpty(testCase.Data.WkbResult))
+                Assert.Equal(testCase.Data.Wkt, Geometry.Parse(testCase.Data.WkbXdr.ToByteArray()).ToWkt());
+            else
+                Assert.Equal(testCase.Data.WkbResult, Geometry.Parse(testCase.Data.WkbXdr.ToByteArray()).ToWkt());
+        }
+
+        [Theory]
+        [MemberData("TestData")]
         public void ToWkt(TestCase testCase)
         {
             Assert.Equal(testCase.Data.Wkt, Geometry.Parse(testCase.Data.Wkt).ToWkt());
@@ -49,6 +59,6 @@ namespace Wkx.Tests
         public void ToWkb(TestCase testCase)
         {
             Assert.Equal(testCase.Data.Wkb.ToByteArray(), Geometry.Parse(testCase.Data.Wkt).ToWkb());
-        }
+        }        
     }
 }
