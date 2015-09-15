@@ -35,6 +35,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="EndianBinaryReader.cs" />
+    <Compile Include="Ewkt\EwktReader.cs" />
+    <Compile Include="Ewkt\EwktWriter.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Geometry.cs" />
     <Compile Include="GeometryCollection.cs" />

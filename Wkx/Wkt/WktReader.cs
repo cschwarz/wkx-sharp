@@ -23,7 +23,7 @@ namespace Wkx
             this.value = value;
         }
 
-        internal Geometry Read()
+        internal virtual Geometry Read()
         {
             GeometryType geometryType = MatchType();
 
@@ -40,7 +40,7 @@ namespace Wkx
             }
         }
 
-        private Point ReadPoint()
+        protected Point ReadPoint()
         {
             if (IsEmpty())
                 return new Point();
@@ -52,7 +52,7 @@ namespace Wkx
             return point;
         }
 
-        private LineString ReadLineString()
+        protected LineString ReadLineString()
         {
             if (IsEmpty())
                 return new LineString();
@@ -64,7 +64,7 @@ namespace Wkx
             return lineString;
         }
 
-        private Polygon ReadPolygon()
+        protected Polygon ReadPolygon()
         {
             if (IsEmpty())
                 return new Polygon();
@@ -87,7 +87,7 @@ namespace Wkx
             return polygon;
         }
 
-        private MultiPoint ReadMultiPoint()
+        protected MultiPoint ReadMultiPoint()
         {
             if (IsEmpty())
                 return new MultiPoint();
@@ -99,7 +99,7 @@ namespace Wkx
             return multiPoint;
         }
 
-        private MultiLineString ReadMultiLineString()
+        protected MultiLineString ReadMultiLineString()
         {
             if (IsEmpty())
                 return new MultiLineString();
@@ -118,7 +118,7 @@ namespace Wkx
             return multiLineString;
         }
 
-        private MultiPolygon ReadMultiPolygon()
+        protected MultiPolygon ReadMultiPolygon()
         {
             if (IsEmpty())
                 return new MultiPolygon();
@@ -137,7 +137,7 @@ namespace Wkx
             return multiPolygon;
         }
 
-        private GeometryCollection ReadGeometryCollection()
+        protected GeometryCollection ReadGeometryCollection()
         {
             if (IsEmpty())
                 return new GeometryCollection();
@@ -156,7 +156,7 @@ namespace Wkx
             return geometryCollection;
         }
 
-        private GeometryType MatchType()
+        protected GeometryType MatchType()
         {
             GeometryType geometryType;
 
@@ -166,19 +166,19 @@ namespace Wkx
             return geometryType;
         }
 
-        private void ExpectGroupStart()
+        protected void ExpectGroupStart()
         {
             if (!IsMatch("("))
                 throw new Exception("Expected group start");
         }
 
-        private void ExpectGroupEnd()
+        protected void ExpectGroupEnd()
         {
             if (!IsMatch(")"))
                 throw new Exception("Expected group end");
         }
 
-        private Point MatchCoordinate()
+        protected Point MatchCoordinate()
         {
             Match match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)");
 
@@ -189,7 +189,7 @@ namespace Wkx
                 double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture));
         }
 
-        private IEnumerable<Point> MatchCoordinates()
+        protected IEnumerable<Point> MatchCoordinates()
         {
             List<Point> coordinates = new List<Point>();
 
@@ -201,18 +201,18 @@ namespace Wkx
             return coordinates;
         }
 
-        private bool IsEmpty()
+        protected bool IsEmpty()
         {
             return IsMatch("EMPTY");
         }
 
-        private void SkipWhitespaces()
+        protected void SkipWhitespaces()
         {
             while (position < value.Length && char.IsWhiteSpace(value[position]))
                 position++;
         }
-        
-        private string Match(params string[] tokens)
+
+        protected string Match(params string[] tokens)
         {            
             SkipWhitespaces();
 
@@ -228,7 +228,7 @@ namespace Wkx
             return null;
         }
 
-        private Match MatchRegex(params string[] tokens)
+        protected Match MatchRegex(params string[] tokens)
         {
             SkipWhitespaces();
 
@@ -248,7 +248,7 @@ namespace Wkx
             return null;
         }
 
-        private bool IsMatch(params string[] tokens)
+        protected bool IsMatch(params string[] tokens)
         {
             SkipWhitespaces();
 

@@ -26,7 +26,14 @@ namespace Wkx.Tests
         {
             ParseTest(testCase, t => t.Wkt, false);
         }
-        
+
+        [Theory]
+        [MemberData("TestData")]
+        public void ParseEwkt(TestCase testCase)
+        {
+            ParseTest(testCase, t => t.Ewkt, false);
+        }
+
         [Theory]
         [MemberData("TestData")]
         public void ParseWkb(TestCase testCase)
@@ -45,14 +52,21 @@ namespace Wkx.Tests
         [MemberData("TestData")]
         public void ToWkt(TestCase testCase)
         {
-            Assert.Equal(testCase.Data.Wkt, Geometry.Parse(testCase.Data.Wkt).ToWkt());
+            SerializeTest(testCase, g => g.ToWkt(), t => t.Wkt);
+        }
+
+        [Theory]
+        [MemberData("TestData")]
+        public void ToEwkt(TestCase testCase)
+        {
+            SerializeTest(testCase, g => g.ToEwkt(), t => t.Ewkt);
         }
 
         [Theory]
         [MemberData("TestData")]
         public void ToWkb(TestCase testCase)
         {
-            Assert.Equal(testCase.Data.Wkb.ToByteArray(), Geometry.Parse(testCase.Data.Wkt).ToWkb());
+            SerializeTest(testCase, g => g.ToWkb(), t => t.Wkb.ToByteArray());
         }
 
         private static void ParseTest(TestCase testCase, Func<TestCaseData, string> testProperty, bool isBinary)
@@ -67,5 +81,13 @@ namespace Wkx.Tests
             else
                 Assert.Equal(wktResult, Geometry.Parse(testProperty(testCase.Data)).ToWkt());
         }
+
+        private static void SerializeTest<T>(TestCase testCase, Func<Geometry, T> serializeFunction, Func<TestCaseData, T> resultProperty)
+        {
+            Geometry geometry = Geometry.Parse(testCase.Data.Wkt);
+            geometry.Srid = 4326;
+
+            Assert.Equal(resultProperty(testCase.Data), serializeFunction(geometry));
+        }        
     }
 }

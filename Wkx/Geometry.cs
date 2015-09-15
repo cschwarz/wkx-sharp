@@ -4,11 +4,15 @@ namespace Wkx
 {
     public abstract class Geometry
     {
+        public int? Srid { get; set; }
         public abstract GeometryType GeometryType { get; }
         public abstract bool IsEmpty { get; }
 
         public static Geometry Parse(string value)
         {
+            if (value.StartsWith("SRID="))
+                return new EwktReader(value).Read();
+
             return new WktReader(value).Read();
         }
 
@@ -26,6 +30,11 @@ namespace Wkx
         public string ToWkt()
         {
             return new WktWriter().Write(this);
+        }
+
+        public string ToEwkt()
+        {
+            return new EwktWriter().Write(this);
         }
 
         public byte[] ToWkb()

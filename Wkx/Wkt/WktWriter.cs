@@ -14,7 +14,7 @@ namespace Wkx
             wktBuilder = new StringBuilder();
         }
 
-        internal string Write(Geometry geometry)
+        internal virtual string Write(Geometry geometry)
         {
             WriteWktType(geometry.GeometryType, geometry.IsEmpty);
 
