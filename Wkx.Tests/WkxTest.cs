@@ -24,27 +24,21 @@ namespace Wkx.Tests
         [MemberData("TestData")]
         public void ParseWkt(TestCase testCase)
         {
-            Assert.Equal(testCase.Data.Wkt, Geometry.Parse(testCase.Data.Wkt).ToWkt());
+            ParseTest(testCase, t => t.Wkt, false);
         }
         
         [Theory]
         [MemberData("TestData")]
         public void ParseWkb(TestCase testCase)
         {
-            if (string.IsNullOrEmpty(testCase.Data.WkbResult))
-                Assert.Equal(testCase.Data.Wkt, Geometry.Parse(testCase.Data.Wkb.ToByteArray()).ToWkt());
-            else
-                Assert.Equal(testCase.Data.WkbResult, Geometry.Parse(testCase.Data.Wkb.ToByteArray()).ToWkt());
+            ParseTest(testCase, t => t.Wkb, true);
         }
 
         [Theory]
         [MemberData("TestData")]
         public void ParseWkbXdr(TestCase testCase)
         {
-            if (string.IsNullOrEmpty(testCase.Data.WkbResult))
-                Assert.Equal(testCase.Data.Wkt, Geometry.Parse(testCase.Data.WkbXdr.ToByteArray()).ToWkt());
-            else
-                Assert.Equal(testCase.Data.WkbResult, Geometry.Parse(testCase.Data.WkbXdr.ToByteArray()).ToWkt());
+            ParseTest(testCase, t => t.WkbXdr, true);
         }
 
         [Theory]
@@ -59,6 +53,19 @@ namespace Wkx.Tests
         public void ToWkb(TestCase testCase)
         {
             Assert.Equal(testCase.Data.Wkb.ToByteArray(), Geometry.Parse(testCase.Data.Wkt).ToWkb());
-        }        
+        }
+
+        private static void ParseTest(TestCase testCase, Func<TestCaseData, string> testProperty, bool isBinary)
+        {
+            string wktResult = testCase.Data.Results != null ? testProperty(testCase.Data.Results) : testCase.Data.Wkt;
+
+            if (string.IsNullOrEmpty(wktResult))
+                wktResult = testCase.Data.Wkt;
+
+            if (isBinary)
+                Assert.Equal(wktResult, Geometry.Parse(testProperty(testCase.Data).ToByteArray()).ToWkt());
+            else
+                Assert.Equal(wktResult, Geometry.Parse(testProperty(testCase.Data)).ToWkt());
+        }
     }
 }
