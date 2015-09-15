@@ -1,0 +1,23 @@
+﻿{
+  "emptyPoint": "POINT EMPTY",
+  "point": "POINT(1 2)",
+  "emptyLineString": "LINESTRING EMPTY",
+  "lineString": "LINESTRING(1 2,3 4)",
+  "emptyPolygon": "POLYGON EMPTY",
+  "polygon": "POLYGON((1 2,3 4,5 6,1 2))",
+  "polygonWithOneInteriorRing": "POLYGON((1 2,3 4,5 6,1 2),(11 12,13 14,15 16,11 12))",
+  "polygonWithTwoInteriorRings": "POLYGON((1 2,3 4,5 6,1 2),(11 12,13 14,15 16,11 12),(21 22,23 24,25 26,21 22))",
+  "emptyMultiPoint": "MULTIPOINT EMPTY",
+  "multiPointWithOnePoint": "MULTIPOINT(1 2)",
+  "multiPointWithTwoPoints": "MULTIPOINT(1 2,3 4)",
+  "emptyMultiLineString": "MULTILINESTRING EMPTY",
+  "multiLineStringWithOneLineString": "MULTILINESTRING((1 2,3 4))",
+  "multiLineStringWithTwoLineStrings": "MULTILINESTRING((1 2,3 4),(5 6,7 8))",
+  "emptyMultiPolygon": "MULTIPOLYGON EMPTY",
+  "multiPolygonWithOnePolygon": "MULTIPOLYGON(((1 2,3 4,5 6,1 2)))",
+  "multiPolygonWithTwoPolygons": "MULTIPOLYGON(((1 2,3 4,5 6,1 2)),((1 2,3 4,5 6,1 2),(11 12,13 14,15 16,11 12),(21 22,23 24,25 26,21 22)))",
+  "emptyGeometryCollection": "GEOMETRYCOLLECTION EMPTY",
+  "geometryCollectionWithPoint": "GEOMETRYCOLLECTION(POINT(1 2))",
+  "geometryCollectionWithPointAndLineString": "GEOMETRYCOLLECTION(POINT(1 2),LINESTRING(1 2,3 4))",
+  "geometryCollectionWithPointAndLineStringAndPolygon": "GEOMETRYCOLLECTION(POINT(1 2),LINESTRING(1 2,3 4),POLYGON((1 2,3 4,5 6,1 2),(11 12,13 14,15 16,11 12),(21 22,23 24,25 26,21 22)))"
+}
