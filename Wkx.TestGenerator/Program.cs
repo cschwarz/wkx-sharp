@@ -34,34 +34,40 @@ namespace Wkx.TestGenerator
                 {
                     command.Connection = connection;
 
-                    foreach (var testInput in testInputData)
+                    foreach (var testDimension in testInputData)
                     {
-                        command.CommandText = GenerateTestSql(geometryFormats);
+                        JObject dimension = new JObject();
+                        testOutputData[testDimension.Key] = dimension;
 
-                        command.Parameters.Clear();
-                        command.Parameters.Add(new NpgsqlParameter("input", testInput.Value.Value<string>()));
-
-                        using (NpgsqlDataReader reader = command.ExecuteReader())
+                        foreach (var testInput in testDimension.Value.ToObject<JObject>())
                         {
-                            reader.Read();
+                            command.CommandText = GenerateTestSql(geometryFormats);
 
-                            JObject testOutput = new JObject();
-                            JObject testOutputResult = new JObject();
+                            command.Parameters.Clear();
+                            command.Parameters.Add(new NpgsqlParameter("input", testInput.Value.Value<string>()));
 
-                            testOutputData[testInput.Key] = testOutput;
-
-                            foreach (GeometryFormat geometryFormat in geometryFormats)
+                            using (NpgsqlDataReader reader = command.ExecuteReader())
                             {
-                                testOutput[geometryFormat.Name] = reader.GetString(reader.GetOrdinal(geometryFormat.Name));
+                                reader.Read();
 
-                                string result = reader.GetString(reader.GetOrdinal(geometryFormat.Name + "result"));
+                                JObject testOutput = new JObject();
+                                JObject testOutputResult = new JObject();
 
-                                if (testInput.Value.Value<string>() != result)
-                                    testOutputResult[geometryFormat.Name] = result;
+                                dimension[testInput.Key] = testOutput;
+
+                                foreach (GeometryFormat geometryFormat in geometryFormats)
+                                {
+                                    testOutput[geometryFormat.Name] = reader.GetString(reader.GetOrdinal(geometryFormat.Name));
+
+                                    string result = reader.GetString(reader.GetOrdinal(geometryFormat.Name + "result"));
+
+                                    if (testInput.Value.Value<string>() != result)
+                                        testOutputResult[geometryFormat.Name] = result;
+                                }
+
+                                if (testOutputResult.Count > 0)
+                                    testOutput["results"] = testOutputResult;
                             }
-
-                            if (testOutputResult.Count > 0)
-                                testOutput["results"] = testOutputResult;
                         }
                     }
                 }
