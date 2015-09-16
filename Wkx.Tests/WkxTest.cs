@@ -14,10 +14,15 @@ namespace Wkx.Tests
         {
             TestData = new TheoryData<TestCase>();
 
-            JObject testdata = JsonConvert.DeserializeObject<JObject>(File.ReadAllText("testdata.json"));
+            JObject testData = JsonConvert.DeserializeObject<JObject>(File.ReadAllText("testdata.json"));
 
-            foreach (var test in testdata)
-                TestData.Add(new TestCase(test.Key, test.Value.ToObject<TestCaseData>()));
+            foreach (var dimension in testData)
+            {
+                foreach (var test in dimension.Value.ToObject<JObject>())
+                {
+                    TestData.Add(new TestCase(dimension.Key, test.Key, test.Value.ToObject<TestCaseData>()));
+                }
+            }
         }
 
         [Theory]
