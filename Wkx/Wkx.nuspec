@@ -4,6 +4,7 @@
     <id>Wkx</id>
     <version>$version$</version>
     <title>Wkx</title>
+    <description>A WKT/WKB/EWKT/EWKB parser and serializer.</description>
     <authors>Christian Schwarz</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>    
     <tags>WKT WKB EWKT EWKB OGC Geometry Geography Spatial</tags>
