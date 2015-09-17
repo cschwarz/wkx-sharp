@@ -7,7 +7,7 @@ namespace Wkx
 {
     internal class WktWriter
     {
-        private StringBuilder wktBuilder;
+        protected StringBuilder wktBuilder;
 
         internal WktWriter()
         {
@@ -36,7 +36,7 @@ namespace Wkx
             return wktBuilder.ToString();
         }
 
-        private void WriteWktType(GeometryType geometryType, Dimensions dimensions, bool isEmpty)
+        protected virtual void WriteWktType(GeometryType geometryType, Dimensions dimensions, bool isEmpty)
         {
             wktBuilder.Append(geometryType.ToString().ToUpperInvariant());
 

@@ -206,7 +206,7 @@ namespace Wkx
                 throw new Exception("Expected group end");
         }
 
-        protected Point MatchCoordinate(Dimensions dimensions)
+        protected virtual Point MatchCoordinate(Dimensions dimensions)
         {
             Match match = null;
 
