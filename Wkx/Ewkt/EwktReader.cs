@@ -6,7 +6,7 @@ namespace Wkx
 {
     internal class EwktReader : WktReader
     {
-        protected Dimensions? dimensions;
+        protected Dimensions? geometryDimensions;
 
         internal EwktReader(string value)
             : base(value)
@@ -22,7 +22,7 @@ namespace Wkx
             if (match.Success)
                 geometry.Srid = int.Parse(match.Groups[1].Value);
 
-            geometry.Dimensions = dimensions.HasValue ? dimensions.Value : Dimensions.XY;
+            geometry.Dimensions = geometryDimensions.HasValue ? geometryDimensions.Value : Dimensions.XY;
 
             return geometry;
         }
@@ -33,7 +33,7 @@ namespace Wkx
 
             if (match.Success)
             {
-                dimensions = Dimensions.XYZM;
+                geometryDimensions = Dimensions.XYZM;
                 return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[4].Value, CultureInfo.InvariantCulture));
             }
 
@@ -43,17 +43,17 @@ namespace Wkx
             {
                 if (dimensions.HasFlag(Dimensions.M))
                 {
-                    dimensions = Dimensions.XYM;
+                    geometryDimensions = Dimensions.XYM;
                     return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), null, double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
                 }
                 else
                 {
-                    dimensions = Dimensions.XYZ;
+                    geometryDimensions = Dimensions.XYZ;
                     return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
                 }
             }
 
-            dimensions = Dimensions.XY;
+            geometryDimensions = Dimensions.XY;
             match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)");
             return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture));            
         }
