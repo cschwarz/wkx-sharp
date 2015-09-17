@@ -34,7 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Dimensions.cs" />
+    <Compile Include="Dimension.cs" />
     <Compile Include="EndianBinaryReader.cs" />
     <Compile Include="Ewkt\EwktReader.cs" />
     <Compile Include="Ewkt\EwktWriter.cs" />

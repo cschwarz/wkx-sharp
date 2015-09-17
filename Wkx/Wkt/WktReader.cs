@@ -26,27 +26,27 @@ namespace Wkx
         internal virtual Geometry Read()
         {
             GeometryType geometryType = MatchType();
-            Dimensions dimensions = MatchDimensions();
+            Dimension dimension = MatchDimension();
 
-            Geometry geometry = CreateGeometry(geometryType, dimensions);
+            Geometry geometry = CreateGeometry(geometryType, dimension);
 
             if (IsEmpty())
                 return geometry;
 
             switch (geometryType)
             {
-                case GeometryType.Point: return ReadPoint(dimensions);
-                case GeometryType.LineString: return ReadLineString(dimensions);
-                case GeometryType.Polygon: return ReadPolygon(dimensions);
-                case GeometryType.MultiPoint: return ReadMultiPoint(dimensions);
-                case GeometryType.MultiLineString: return ReadMultiLineString(dimensions);
-                case GeometryType.MultiPolygon: return ReadMultiPolygon(dimensions);
-                case GeometryType.GeometryCollection: return ReadGeometryCollection(dimensions);
+                case GeometryType.Point: return ReadPoint(dimension);
+                case GeometryType.LineString: return ReadLineString(dimension);
+                case GeometryType.Polygon: return ReadPolygon(dimension);
+                case GeometryType.MultiPoint: return ReadMultiPoint(dimension);
+                case GeometryType.MultiLineString: return ReadMultiLineString(dimension);
+                case GeometryType.MultiPolygon: return ReadMultiPolygon(dimension);
+                case GeometryType.GeometryCollection: return ReadGeometryCollection(dimension);
                 default: throw new Exception();
             }
         }
 
-        protected Geometry CreateGeometry(GeometryType geometryType, Dimensions dimensions)
+        protected Geometry CreateGeometry(GeometryType geometryType, Dimension dimension)
         {
             Geometry geometry = null;
 
@@ -61,44 +61,44 @@ namespace Wkx
                 case GeometryType.GeometryCollection: geometry = new GeometryCollection(); break;
             }
 
-            geometry.Dimensions = dimensions;
+            geometry.Dimension = dimension;
 
             return geometry;
         }
         
-        protected Point ReadPoint(Dimensions dimensions)
+        protected Point ReadPoint(Dimension dimension)
         {
             ExpectGroupStart();
-            Point point = MatchCoordinate(dimensions);
-            point.Dimensions = dimensions;
+            Point point = MatchCoordinate(dimension);
+            point.Dimension = dimension;
             ExpectGroupEnd();
 
             return point;
         }
 
-        protected LineString ReadLineString(Dimensions dimensions)
+        protected LineString ReadLineString(Dimension dimension)
         {
             ExpectGroupStart();
-            LineString lineString = new LineString(MatchCoordinates(dimensions));
-            lineString.Dimensions = dimensions;
+            LineString lineString = new LineString(MatchCoordinates(dimension));
+            lineString.Dimension = dimension;
             ExpectGroupEnd();
 
             return lineString;
         }
 
-        protected Polygon ReadPolygon(Dimensions dimensions)
+        protected Polygon ReadPolygon(Dimension dimension)
         {
             ExpectGroupStart();
 
             ExpectGroupStart();
-            Polygon polygon = new Polygon(MatchCoordinates(dimensions));
-            polygon.Dimensions = dimensions;
+            Polygon polygon = new Polygon(MatchCoordinates(dimension));
+            polygon.Dimension = dimension;
             ExpectGroupEnd();
 
             while (IsMatch(","))
             {
                 ExpectGroupStart();
-                polygon.InteriorRings.Add(new List<Point>(MatchCoordinates(dimensions)));
+                polygon.InteriorRings.Add(new List<Point>(MatchCoordinates(dimension)));
                 ExpectGroupEnd();
             }
 
@@ -107,26 +107,26 @@ namespace Wkx
             return polygon;
         }
 
-        protected MultiPoint ReadMultiPoint(Dimensions dimensions)
+        protected MultiPoint ReadMultiPoint(Dimension dimension)
         {
             ExpectGroupStart();
-            MultiPoint multiPoint = new MultiPoint(MatchCoordinates(dimensions));
-            multiPoint.Dimensions = dimensions;
+            MultiPoint multiPoint = new MultiPoint(MatchCoordinates(dimension));
+            multiPoint.Dimension = dimension;
             ExpectGroupEnd();
 
             return multiPoint;
         }
 
-        protected MultiLineString ReadMultiLineString(Dimensions dimensions)
+        protected MultiLineString ReadMultiLineString(Dimension dimension)
         {
             MultiLineString multiLineString = new MultiLineString();
-            multiLineString.Dimensions = dimensions;
+            multiLineString.Dimension = dimension;
 
             ExpectGroupStart();
 
             do
             {
-                multiLineString.LineStrings.Add(ReadLineString(dimensions));
+                multiLineString.LineStrings.Add(ReadLineString(dimension));
             } while (IsMatch(","));
 
             ExpectGroupEnd();
@@ -134,16 +134,16 @@ namespace Wkx
             return multiLineString;
         }
 
-        protected MultiPolygon ReadMultiPolygon(Dimensions dimensions)
+        protected MultiPolygon ReadMultiPolygon(Dimension dimension)
         {
             MultiPolygon multiPolygon = new MultiPolygon();
-            multiPolygon.Dimensions = dimensions;
+            multiPolygon.Dimension = dimension;
 
             ExpectGroupStart();
 
             do
             {
-                multiPolygon.Polygons.Add(ReadPolygon(dimensions));
+                multiPolygon.Polygons.Add(ReadPolygon(dimension));
             } while (IsMatch(","));
 
             ExpectGroupEnd();
@@ -151,10 +151,10 @@ namespace Wkx
             return multiPolygon;
         }
 
-        protected GeometryCollection ReadGeometryCollection(Dimensions dimensions)
+        protected GeometryCollection ReadGeometryCollection(Dimension dimension)
         {
             GeometryCollection geometryCollection = new GeometryCollection();
-            geometryCollection.Dimensions = dimensions;
+            geometryCollection.Dimension = dimension;
 
             ExpectGroupStart();
 
@@ -178,18 +178,18 @@ namespace Wkx
             return geometryType;
         }
 
-        protected Dimensions MatchDimensions()
+        protected Dimension MatchDimension()
         {
-            string dimensionsMatch = Match("ZM", "Z", "M");
+            string dimensionMatch = Match("ZM", "Z", "M");
 
-            if (dimensionsMatch == null)
-                return Dimensions.XY;
+            if (dimensionMatch == null)
+                return Dimension.Xy;
 
-            switch(dimensionsMatch)
+            switch(dimensionMatch)
             {
-                case "Z": return Dimensions.XY | Dimensions.Z;
-                case "M": return Dimensions.XY | Dimensions.M;
-                case "ZM": return Dimensions.XY | Dimensions.Z | Dimensions.M;
+                case "Z": return Dimension.Xyz;
+                case "M": return Dimension.Xym;
+                case "ZM": return Dimension.Xyzm;
                 default: throw new Exception();
             }
         }
@@ -206,39 +206,39 @@ namespace Wkx
                 throw new Exception("Expected group end");
         }
 
-        protected virtual Point MatchCoordinate(Dimensions dimensions)
+        protected virtual Point MatchCoordinate(Dimension dimension)
         {
             Match match = null;
 
-            switch (dimensions)
+            switch (dimension)
             {
-                case Dimensions.XY: match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)"); break;
-                case Dimensions.XYZ:
-                case Dimensions.XYM: match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)"); break;
-                case Dimensions.XYZM: match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)"); break;
+                case Dimension.Xy: match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)"); break;
+                case Dimension.Xyz:
+                case Dimension.Xym: match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)"); break;
+                case Dimension.Xyzm: match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)"); break;
                 default: throw new Exception();
             }
 
             if (!match.Success)
                 throw new Exception("Expected coordinates");
 
-            switch (dimensions)
+            switch (dimension)
             {
-                case Dimensions.XY: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture));
-                case Dimensions.XYZ: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
-                case Dimensions.XYM: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), null, double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
-                case Dimensions.XYZM: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[4].Value, CultureInfo.InvariantCulture));
+                case Dimension.Xy: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture));
+                case Dimension.Xyz: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
+                case Dimension.Xym: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), null, double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
+                case Dimension.Xyzm: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[4].Value, CultureInfo.InvariantCulture));
                 default: throw new Exception();
             }
         }
 
-        protected IEnumerable<Point> MatchCoordinates(Dimensions dimensions)
+        protected IEnumerable<Point> MatchCoordinates(Dimension dimension)
         {
             List<Point> coordinates = new List<Point>();
 
             do
             {
-                coordinates.Add(MatchCoordinate(dimensions));
+                coordinates.Add(MatchCoordinate(dimension));
             } while (IsMatch(","));
 
             return coordinates;

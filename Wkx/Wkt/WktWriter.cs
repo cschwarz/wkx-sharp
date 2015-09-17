@@ -16,7 +16,7 @@ namespace Wkx
 
         internal virtual string Write(Geometry geometry)
         {
-            WriteWktType(geometry.GeometryType, geometry.Dimensions, geometry.IsEmpty);
+            WriteWktType(geometry.GeometryType, geometry.Dimension, geometry.IsEmpty);
 
             if (geometry.IsEmpty)
                 return wktBuilder.ToString();
@@ -36,18 +36,18 @@ namespace Wkx
             return wktBuilder.ToString();
         }
 
-        protected virtual void WriteWktType(GeometryType geometryType, Dimensions dimensions, bool isEmpty)
+        protected virtual void WriteWktType(GeometryType geometryType, Dimension dimension, bool isEmpty)
         {
             wktBuilder.Append(geometryType.ToString().ToUpperInvariant());
 
-            switch (dimensions)
+            switch (dimension)
             {
-                case Dimensions.XYZ: wktBuilder.Append(" Z "); break;
-                case Dimensions.XYM: wktBuilder.Append(" M "); break;
-                case Dimensions.XYZM: wktBuilder.Append(" ZM "); break;
+                case Dimension.Xyz: wktBuilder.Append(" Z "); break;
+                case Dimension.Xym: wktBuilder.Append(" M "); break;
+                case Dimension.Xyzm: wktBuilder.Append(" ZM "); break;
             }
 
-            if (isEmpty && dimensions == Dimensions.XY)
+            if (isEmpty && dimension == Dimension.Xy)
                 wktBuilder.Append(" ");
 
             if (isEmpty)

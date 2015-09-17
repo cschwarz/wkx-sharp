@@ -7,11 +7,11 @@
             return string.Concat("SRID=", geometry.Srid, ";", base.Write(geometry));
         }
 
-        protected override void WriteWktType(GeometryType geometryType, Dimensions dimensions, bool isEmpty)
+        protected override void WriteWktType(GeometryType geometryType, Dimension dimension, bool isEmpty)
         {
             wktBuilder.Append(geometryType.ToString().ToUpperInvariant());
 
-            if  (dimensions == Dimensions.XYM)
+            if (dimension == Dimension.Xym)
                 wktBuilder.Append("M");
 
             if (isEmpty)

@@ -8,7 +8,7 @@ namespace Wkx
         public abstract bool IsEmpty { get; }
 
         public int? Srid { get; set; }        
-        public Dimensions Dimensions { get; set; }
+        public Dimension Dimension { get; set; }
         
         public static Geometry Parse(string value)
         {
