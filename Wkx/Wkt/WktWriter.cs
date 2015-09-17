@@ -16,7 +16,7 @@ namespace Wkx
 
         internal virtual string Write(Geometry geometry)
         {
-            WriteWktType(geometry.GeometryType, geometry.IsEmpty);
+            WriteWktType(geometry.GeometryType, geometry.Dimensions, geometry.IsEmpty);
 
             if (geometry.IsEmpty)
                 return wktBuilder.ToString();
@@ -36,16 +36,33 @@ namespace Wkx
             return wktBuilder.ToString();
         }
 
-        private void WriteWktType(GeometryType geometryType, bool isEmpty)
+        private void WriteWktType(GeometryType geometryType, Dimensions dimensions, bool isEmpty)
         {
             wktBuilder.Append(geometryType.ToString().ToUpperInvariant());
 
+            switch (dimensions)
+            {
+                case Dimensions.XYZ: wktBuilder.Append(" Z "); break;
+                case Dimensions.XYM: wktBuilder.Append(" M "); break;
+                case Dimensions.XYZM: wktBuilder.Append(" ZM "); break;
+            }
+
+            if (isEmpty && dimensions == Dimensions.XY)
+                wktBuilder.Append(" ");
+
             if (isEmpty)
-                wktBuilder.Append(" EMPTY");
+                wktBuilder.Append("EMPTY");
         }
 
         private string GetWktCoordinate(Point coordinate)
         {
+            if (coordinate.Z.HasValue && coordinate.M.HasValue)
+                return string.Format("{0} {1} {2} {3}", coordinate.X, coordinate.Y, coordinate.Z, coordinate.M);
+            else if (coordinate.Z.HasValue)
+                return string.Format("{0} {1} {2}", coordinate.X, coordinate.Y, coordinate.Z);
+            else if (coordinate.M.HasValue)
+                return string.Format("{0} {1} {2}", coordinate.X, coordinate.Y, coordinate.M);
+
             return string.Format("{0} {1}", coordinate.X, coordinate.Y);
         }
 
