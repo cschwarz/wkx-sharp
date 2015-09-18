@@ -9,7 +9,7 @@ namespace Wkx
 {
     internal class WkbWriter
     {
-        private BinaryWriter wkbWriter;
+        protected BinaryWriter wkbWriter;
         
         internal byte[] Write(Geometry geometry)
         {
@@ -22,22 +22,38 @@ namespace Wkx
             }               
         }
 
-        private void WriteInternal(Geometry geometry)
+        protected virtual void WriteWkbType(GeometryType geometryType, Dimension dimension)
+        {
+            uint dimensionType = 0;
+
+            switch (dimension)
+            {
+                case Dimension.Xyz: dimensionType = 1000; break;
+                case Dimension.Xym: dimensionType = 2000; break;
+                case Dimension.Xyzm: dimensionType = 3000; break;
+            }
+
+            wkbWriter.Write(dimensionType + (uint)geometryType);
+        }
+
+        private void WriteInternal(Geometry geometry, Dimension? parentDimension = null)
         {
             wkbWriter.Write(true);
 
+            Dimension dimension = parentDimension.HasValue ? parentDimension.Value : geometry.Dimension;
+
             if (geometry.GeometryType == GeometryType.Point && geometry.IsEmpty)
             {
-                wkbWriter.Write((uint)GeometryType.MultiPoint);
+                WriteWkbType(GeometryType.MultiPoint, dimension);
                 wkbWriter.Write(0);
             }
             else
             {
-                wkbWriter.Write((uint)geometry.GeometryType);
+                WriteWkbType(geometry.GeometryType, dimension);
 
                 switch (geometry.GeometryType)
                 {
-                    case GeometryType.Point: WritePoint(geometry as Point); break;
+                    case GeometryType.Point: WritePoint(geometry as Point, dimension); break;
                     case GeometryType.LineString: WriteLineString(geometry as LineString); break;
                     case GeometryType.Polygon: WritePolygon(geometry as Polygon); break;
                     case GeometryType.MultiPoint: WriteMultiPoint(geometry as MultiPoint); break;
@@ -49,10 +65,16 @@ namespace Wkx
             }
         }
 
-        private void WritePoint(Point point)
+        private void WritePoint(Point point, Dimension dimension)
         {
             wkbWriter.Write(point.X.Value);
             wkbWriter.Write(point.Y.Value);
+
+            if (dimension == Dimension.Xyz || dimension == Dimension.Xyzm)
+                wkbWriter.Write(point.Z.Value);
+
+            if (dimension == Dimension.Xym || dimension == Dimension.Xyzm)
+                wkbWriter.Write(point.M.Value);
         }
 
         private void WriteLineString(LineString lineString)
@@ -60,7 +82,7 @@ namespace Wkx
             wkbWriter.Write(lineString.Points.Count);
 
             foreach (Point point in lineString.Points)
-                WritePoint(point);
+                WritePoint(point, lineString.Dimension);
         }
 
         private void WritePolygon(Polygon polygon)
@@ -75,13 +97,13 @@ namespace Wkx
 
             wkbWriter.Write(polygon.ExteriorRing.Count);
             foreach (Point point in polygon.ExteriorRing)
-                WritePoint(point);
+                WritePoint(point, polygon.Dimension);
 
             foreach (List<Point> interiorRing in polygon.InteriorRings)
             {
                 wkbWriter.Write(interiorRing.Count);
                 foreach (Point point in interiorRing)
-                    WritePoint(point);
+                    WritePoint(point, polygon.Dimension);
             }
         }
 
@@ -90,7 +112,7 @@ namespace Wkx
             wkbWriter.Write(multiPoint.Points.Count);
 
             foreach (Point point in multiPoint.Points)
-                WriteInternal(point);
+                WriteInternal(point, multiPoint.Dimension);
         }
 
         private void WriteMultiLineString(MultiLineString multiLineString)
@@ -98,7 +120,7 @@ namespace Wkx
             wkbWriter.Write(multiLineString.LineStrings.Count);
 
             foreach (LineString lineString in multiLineString.LineStrings)
-                WriteInternal(lineString);
+                WriteInternal(lineString, multiLineString.Dimension);
         }
 
         private void WriteMultiPolygon(MultiPolygon multiPolygon)
@@ -106,7 +128,7 @@ namespace Wkx
             wkbWriter.Write(multiPolygon.Polygons.Count);
 
             foreach (Polygon polygon in multiPolygon.Polygons)
-                WriteInternal(polygon);
+                WriteInternal(polygon, multiPolygon.Dimension);
         }
 
         private void WriteGeometryCollection(GeometryCollection geometryCollection)

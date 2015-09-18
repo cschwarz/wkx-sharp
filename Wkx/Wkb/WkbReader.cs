@@ -16,19 +16,44 @@ namespace Wkx
         internal Geometry Read()
         {
             wkbReader.IsBigEndian = !wkbReader.ReadBoolean();
-            GeometryType geometryType = (GeometryType)wkbReader.ReadUInt32();
+            uint type = wkbReader.ReadUInt32();
+            GeometryType geometryType = ReadGeometryType(type);
+            Dimension dimension = ReadDimension(type);
+
+            Geometry geometry = null;
 
             switch (geometryType)
             {
-                case GeometryType.Point: return ReadPoint();
-                case GeometryType.LineString: return ReadLineString();
-                case GeometryType.Polygon: return ReadPolygon();
-                case GeometryType.MultiPoint: return ReadMultiPoint();
-                case GeometryType.MultiLineString: return ReadMultiLineString();
-                case GeometryType.MultiPolygon: return ReadMultiPolygon();
-                case GeometryType.GeometryCollection: return ReadGeometryCollection();
+                case GeometryType.Point: geometry = ReadPoint(dimension); break;
+                case GeometryType.LineString: geometry = ReadLineString(dimension); break;
+                case GeometryType.Polygon: geometry = ReadPolygon(dimension); break;
+                case GeometryType.MultiPoint: geometry = ReadMultiPoint(dimension); break;
+                case GeometryType.MultiLineString: geometry = ReadMultiLineString(dimension); break;
+                case GeometryType.MultiPolygon: geometry = ReadMultiPolygon(dimension); break;
+                case GeometryType.GeometryCollection: geometry = ReadGeometryCollection(dimension); break;
                 default: throw new Exception();
             }
+
+            geometry.Dimension = dimension;
+
+            return geometry;
+        }
+
+        protected virtual GeometryType ReadGeometryType(uint type)
+        {
+            return (GeometryType)(type % 1000);
+        }
+
+        protected virtual Dimension ReadDimension(uint type)
+        {
+            if (type >= 1000 && type < 2000)
+                return Dimension.Xyz;
+            else if (type >= 2000 && type < 3000)
+                return Dimension.Xym;
+            else if (type >= 3000 && type < 4000)
+                return Dimension.Xyzm;
+
+            return Dimension.Xy;
         }
 
         private T Read<T>() where T : Geometry
@@ -36,24 +61,31 @@ namespace Wkx
             return (T)Read();
         }
 
-        private Point ReadPoint()
+        private Point ReadPoint(Dimension dimension)
         {
-            return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble());
+            switch (dimension)
+            {
+                case Dimension.Xy: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble());
+                case Dimension.Xyz: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble());
+                case Dimension.Xym: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), null, wkbReader.ReadDouble());
+                case Dimension.Xyzm: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble());
+                default: throw new Exception();
+            }
         }
 
-        private LineString ReadLineString()
+        private LineString ReadLineString(Dimension dimension)
         {
             LineString lineString = new LineString();
 
             uint pointCount = wkbReader.ReadUInt32();
 
             for (int i = 0; i < pointCount; i++)
-                lineString.Points.Add(ReadPoint());
+                lineString.Points.Add(ReadPoint(dimension));
 
             return lineString;
         }
 
-        private Polygon ReadPolygon()
+        private Polygon ReadPolygon(Dimension dimension)
         {
             Polygon polygon = new Polygon();
 
@@ -63,7 +95,7 @@ namespace Wkx
             {
                 uint exteriorRingCount = wkbReader.ReadUInt32();
                 for (int i = 0; i < exteriorRingCount; i++)
-                    polygon.ExteriorRing.Add(ReadPoint());
+                    polygon.ExteriorRing.Add(ReadPoint(dimension));
 
                 for (int i = 1; i < ringCount; i++)
                 {
@@ -71,14 +103,14 @@ namespace Wkx
 
                     uint interiorRingCount = wkbReader.ReadUInt32();
                     for (int j = 0; j < interiorRingCount; j++)
-                        polygon.InteriorRings[i - 1].Add(ReadPoint());
+                        polygon.InteriorRings[i - 1].Add(ReadPoint(dimension));
                 }
             }
 
             return polygon;
         }
 
-        private MultiPoint ReadMultiPoint()
+        private MultiPoint ReadMultiPoint(Dimension dimension)
         {
             MultiPoint multiPoint = new MultiPoint();
 
@@ -90,7 +122,7 @@ namespace Wkx
             return multiPoint;
         }
 
-        private MultiLineString ReadMultiLineString()
+        private MultiLineString ReadMultiLineString(Dimension dimension)
         {
             MultiLineString multiLineString = new MultiLineString();
 
@@ -102,7 +134,7 @@ namespace Wkx
             return multiLineString;
         }
 
-        private MultiPolygon ReadMultiPolygon()
+        private MultiPolygon ReadMultiPolygon(Dimension dimension)
         {
             MultiPolygon multiPolygon = new MultiPolygon();
 
@@ -114,7 +146,7 @@ namespace Wkx
             return multiPolygon;
         }
 
-        private GeometryCollection ReadGeometryCollection()
+        private GeometryCollection ReadGeometryCollection(Dimension dimension)
         {
             GeometryCollection geometryCollection = new GeometryCollection();
 
