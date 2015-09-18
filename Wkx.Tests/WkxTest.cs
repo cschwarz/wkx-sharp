@@ -55,6 +55,20 @@ namespace Wkx.Tests
 
         [Theory]
         [MemberData("TestData")]
+        public void ParseEwkb(TestCase testCase)
+        {
+            ParseTest(testCase, t => t.Ewkb, true);
+        }
+
+        [Theory]
+        [MemberData("TestData")]
+        public void ParseEwkbXdr(TestCase testCase)
+        {
+            ParseTest(testCase, t => t.EwkbXdr, true);
+        }
+
+        [Theory]
+        [MemberData("TestData")]
         public void ToWkt(TestCase testCase)
         {
             SerializeTest(testCase, g => g.ToWkt(), t => t.Wkt);
@@ -72,6 +86,13 @@ namespace Wkx.Tests
         public void ToWkb(TestCase testCase)
         {
             SerializeTest(testCase, g => g.ToWkb(), t => t.Wkb.ToByteArray());
+        }
+
+        [Theory]
+        [MemberData("TestData")]
+        public void ToEwkb(TestCase testCase)
+        {
+            SerializeTest(testCase, g => g.ToEwkb(), t => t.Ewkb.ToByteArray());
         }
 
         private static void ParseTest(TestCase testCase, Func<TestCaseData, string> testProperty, bool isBinary)

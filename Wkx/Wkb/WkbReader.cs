@@ -6,7 +6,7 @@ namespace Wkx
 {
     internal class WkbReader
     {
-        private EndianBinaryReader wkbReader;
+        protected EndianBinaryReader wkbReader;
 
         internal WkbReader(Stream stream)
         {
@@ -19,6 +19,7 @@ namespace Wkx
             uint type = wkbReader.ReadUInt32();
             GeometryType geometryType = ReadGeometryType(type);
             Dimension dimension = ReadDimension(type);
+            int? srid = ReadSrid(type);
 
             Geometry geometry = null;
 
@@ -35,6 +36,7 @@ namespace Wkx
             }
 
             geometry.Dimension = dimension;
+            geometry.Srid = srid;
 
             return geometry;
         }
@@ -54,6 +56,11 @@ namespace Wkx
                 return Dimension.Xyzm;
 
             return Dimension.Xy;
+        }
+
+        protected virtual int? ReadSrid(uint type)
+        {
+            return null;
         }
 
         private T Read<T>() where T : Geometry

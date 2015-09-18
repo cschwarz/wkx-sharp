@@ -21,12 +21,25 @@ namespace Wkx
         public static Geometry Parse(byte[] buffer)
         {
             using (MemoryStream memoryStream = new MemoryStream(buffer))
-                return new WkbReader(memoryStream).Read();
+                return Parse(memoryStream);
         }
 
         public static Geometry Parse(Stream stream)
         {
-            return new WkbReader(stream).Read();
+            bool isEwkb = false;
+
+            using (EndianBinaryReader binaryReader = new EndianBinaryReader(stream))
+            {
+                binaryReader.IsBigEndian = !binaryReader.ReadBoolean();
+                isEwkb = (binaryReader.ReadUInt32() & EwkbFlags.HasSrid) == EwkbFlags.HasSrid;
+
+                stream.Position = 0;
+
+                if (isEwkb)
+                    return new EwkbReader(stream).Read();
+
+                return new WkbReader(stream).Read();
+            }
         }
 
         public string ToWkt()
@@ -42,6 +55,11 @@ namespace Wkx
         public byte[] ToWkb()
         {
             return new WkbWriter().Write(this);
+        }
+
+        public byte[] ToEwkb()
+        {
+            return new EwkbWriter().Write(this);
         }
     }
 }

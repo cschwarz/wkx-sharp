@@ -36,6 +36,9 @@
   <ItemGroup>
     <Compile Include="Dimension.cs" />
     <Compile Include="EndianBinaryReader.cs" />
+    <Compile Include="Ewkb\EwkbFlags.cs" />
+    <Compile Include="Ewkb\EwkbReader.cs" />
+    <Compile Include="Ewkb\EwkbWriter.cs" />
     <Compile Include="Ewkt\EwktReader.cs" />
     <Compile Include="Ewkt\EwktWriter.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

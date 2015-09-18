@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Wkx
 {
@@ -22,7 +19,7 @@ namespace Wkx
             }               
         }
 
-        protected virtual void WriteWkbType(GeometryType geometryType, Dimension dimension)
+        protected virtual void WriteWkbType(GeometryType geometryType, Dimension dimension, int? srid)
         {
             uint dimensionType = 0;
 
@@ -36,20 +33,20 @@ namespace Wkx
             wkbWriter.Write(dimensionType + (uint)geometryType);
         }
 
-        private void WriteInternal(Geometry geometry, Dimension? parentDimension = null)
+        private void WriteInternal(Geometry geometry, Geometry parentGeometry = null)
         {
             wkbWriter.Write(true);
 
-            Dimension dimension = parentDimension.HasValue ? parentDimension.Value : geometry.Dimension;
-
+            Dimension dimension = parentGeometry != null ? parentGeometry.Dimension : geometry.Dimension;
+            
             if (geometry.GeometryType == GeometryType.Point && geometry.IsEmpty)
             {
-                WriteWkbType(GeometryType.MultiPoint, dimension);
+                WriteWkbType(GeometryType.MultiPoint, dimension, geometry.Srid);
                 wkbWriter.Write(0);
             }
             else
             {
-                WriteWkbType(geometry.GeometryType, dimension);
+                WriteWkbType(geometry.GeometryType, dimension, geometry.Srid);
 
                 switch (geometry.GeometryType)
                 {
@@ -112,7 +109,7 @@ namespace Wkx
             wkbWriter.Write(multiPoint.Points.Count);
 
             foreach (Point point in multiPoint.Points)
-                WriteInternal(point, multiPoint.Dimension);
+                WriteInternal(point, multiPoint);
         }
 
         private void WriteMultiLineString(MultiLineString multiLineString)
@@ -120,7 +117,7 @@ namespace Wkx
             wkbWriter.Write(multiLineString.LineStrings.Count);
 
             foreach (LineString lineString in multiLineString.LineStrings)
-                WriteInternal(lineString, multiLineString.Dimension);
+                WriteInternal(lineString, multiLineString);
         }
 
         private void WriteMultiPolygon(MultiPolygon multiPolygon)
@@ -128,7 +125,7 @@ namespace Wkx
             wkbWriter.Write(multiPolygon.Polygons.Count);
 
             foreach (Polygon polygon in multiPolygon.Polygons)
-                WriteInternal(polygon, multiPolygon.Dimension);
+                WriteInternal(polygon, multiPolygon);
         }
 
         private void WriteGeometryCollection(GeometryCollection geometryCollection)
