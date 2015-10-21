@@ -5,7 +5,7 @@ namespace Wkx
     public class Point : Geometry, IEquatable<Point>
     {
         public override GeometryType GeometryType { get { return GeometryType.Point; } }
-        public override bool IsEmpty { get { return !X.HasValue && !Y.HasValue; } }
+        public override bool IsEmpty { get { return (!X.HasValue || double.IsNaN(X.Value)) && (!Y.HasValue || double.IsNaN(Y.Value)); } }
 
         public double? X { get; private set; }
         public double? Y { get; private set; }
@@ -23,7 +23,7 @@ namespace Wkx
             Z = z;
             M = m;
         }
-        
+
         public override bool Equals(object obj)
         {
             if (obj == null)

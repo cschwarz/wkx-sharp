@@ -3,16 +3,10 @@
     "emptyPoint": {
       "wkt": "POINT EMPTY",
       "ewkt": "SRID=4326;POINT EMPTY",
-      "wkb": "010400000000000000",
-      "ewkb": "0104000020e610000000000000",
-      "wkbXdr": "000000000400000000",
-      "ewkbXdr": "0020000004000010e600000000",
-      "results": {
-        "wkb": "MULTIPOINT EMPTY",
-        "ewkb": "MULTIPOINT EMPTY",
-        "wkbXdr": "MULTIPOINT EMPTY",
-        "ewkbXdr": "MULTIPOINT EMPTY"
-      }
+      "wkb": "0101000000000000000000f87f000000000000f87f",
+      "ewkb": "0101000020e6100000000000000000f87f000000000000f87f",
+      "wkbXdr": "00000000017ff80000000000007ff8000000000000",
+      "ewkbXdr": "0020000001000010e67ff80000000000007ff8000000000000"
     },
     "point": {
       "wkt": "POINT(1 2)",
@@ -179,16 +173,12 @@
     "emptyPoint": {
       "wkt": "POINT Z EMPTY",
       "ewkt": "SRID=4326;POINT EMPTY",
-      "wkb": "01ec03000000000000",
-      "ewkb": "01040000a0e610000000000000",
-      "wkbXdr": "00000003ec00000000",
-      "ewkbXdr": "00a0000004000010e600000000",
+      "wkb": "01e9030000000000000000f87f000000000000f87f000000000000f87f",
+      "ewkb": "01010000a0e6100000000000000000f87f000000000000f87f000000000000f87f",
+      "wkbXdr": "00000003e97ff80000000000007ff80000000000007ff8000000000000",
+      "ewkbXdr": "00a0000001000010e67ff80000000000007ff80000000000007ff8000000000000",
       "results": {
-        "ewkt": "POINT EMPTY",
-        "wkb": "MULTIPOINT Z EMPTY",
-        "ewkb": "MULTIPOINT Z EMPTY",
-        "wkbXdr": "MULTIPOINT Z EMPTY",
-        "ewkbXdr": "MULTIPOINT Z EMPTY"
+        "ewkt": "POINT EMPTY"
       }
     },
     "point": {
@@ -374,16 +364,10 @@
     "emptyPoint": {
       "wkt": "POINT M EMPTY",
       "ewkt": "SRID=4326;POINTM EMPTY",
-      "wkb": "01d407000000000000",
-      "ewkb": "0104000060e610000000000000",
-      "wkbXdr": "00000007d400000000",
-      "ewkbXdr": "0060000004000010e600000000",
-      "results": {
-        "wkb": "MULTIPOINT M EMPTY",
-        "ewkb": "MULTIPOINT M EMPTY",
-        "wkbXdr": "MULTIPOINT M EMPTY",
-        "ewkbXdr": "MULTIPOINT M EMPTY"
-      }
+      "wkb": "01d1070000000000000000f87f000000000000f87f000000000000f87f",
+      "ewkb": "0101000060e6100000000000000000f87f000000000000f87f000000000000f87f",
+      "wkbXdr": "00000007d17ff80000000000007ff80000000000007ff8000000000000",
+      "ewkbXdr": "0060000001000010e67ff80000000000007ff80000000000007ff8000000000000"
     },
     "point": {
       "wkt": "POINT M (1 2 3)",
@@ -550,16 +534,12 @@
     "emptyPoint": {
       "wkt": "POINT ZM EMPTY",
       "ewkt": "SRID=4326;POINT EMPTY",
-      "wkb": "01bc0b000000000000",
-      "ewkb": "01040000e0e610000000000000",
-      "wkbXdr": "0000000bbc00000000",
-      "ewkbXdr": "00e0000004000010e600000000",
+      "wkb": "01b90b0000000000000000f87f000000000000f87f000000000000f87f000000000000f87f",
+      "ewkb": "01010000e0e6100000000000000000f87f000000000000f87f000000000000f87f000000000000f87f",
+      "wkbXdr": "0000000bb97ff80000000000007ff80000000000007ff80000000000007ff8000000000000",
+      "ewkbXdr": "00e0000001000010e67ff80000000000007ff80000000000007ff80000000000007ff8000000000000",
       "results": {
-        "ewkt": "POINT EMPTY",
-        "wkb": "MULTIPOINT ZM EMPTY",
-        "ewkb": "MULTIPOINT ZM EMPTY",
-        "wkbXdr": "MULTIPOINT ZM EMPTY",
-        "ewkbXdr": "MULTIPOINT ZM EMPTY"
+        "ewkt": "POINT EMPTY"
       }
     },
     "point": {

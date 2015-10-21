@@ -38,40 +38,32 @@ namespace Wkx
             wkbWriter.Write(true);
 
             Dimension dimension = parentGeometry != null ? parentGeometry.Dimension : geometry.Dimension;
-            
-            if (geometry.GeometryType == GeometryType.Point && geometry.IsEmpty)
-            {
-                WriteWkbType(GeometryType.MultiPoint, dimension, geometry.Srid);
-                wkbWriter.Write(0);
-            }
-            else
-            {
-                WriteWkbType(geometry.GeometryType, dimension, geometry.Srid);
 
-                switch (geometry.GeometryType)
-                {
-                    case GeometryType.Point: WritePoint(geometry as Point, dimension); break;
-                    case GeometryType.LineString: WriteLineString(geometry as LineString); break;
-                    case GeometryType.Polygon: WritePolygon(geometry as Polygon); break;
-                    case GeometryType.MultiPoint: WriteMultiPoint(geometry as MultiPoint); break;
-                    case GeometryType.MultiLineString: WriteMultiLineString(geometry as MultiLineString); break;
-                    case GeometryType.MultiPolygon: WriteMultiPolygon(geometry as MultiPolygon); break;
-                    case GeometryType.GeometryCollection: WriteGeometryCollection(geometry as GeometryCollection); break;
-                    default: throw new Exception();
-                }
+            WriteWkbType(geometry.GeometryType, dimension, geometry.Srid);
+
+            switch (geometry.GeometryType)
+            {
+                case GeometryType.Point: WritePoint(geometry as Point, dimension); break;
+                case GeometryType.LineString: WriteLineString(geometry as LineString); break;
+                case GeometryType.Polygon: WritePolygon(geometry as Polygon); break;
+                case GeometryType.MultiPoint: WriteMultiPoint(geometry as MultiPoint); break;
+                case GeometryType.MultiLineString: WriteMultiLineString(geometry as MultiLineString); break;
+                case GeometryType.MultiPolygon: WriteMultiPolygon(geometry as MultiPolygon); break;
+                case GeometryType.GeometryCollection: WriteGeometryCollection(geometry as GeometryCollection); break;
+                default: throw new Exception();
             }
         }
 
         private void WritePoint(Point point, Dimension dimension)
-        {
-            wkbWriter.Write(point.X.Value);
-            wkbWriter.Write(point.Y.Value);
+        {            
+            wkbWriter.Write(point.X ?? -double.NaN);
+            wkbWriter.Write(point.Y ?? -double.NaN);
 
             if (dimension == Dimension.Xyz || dimension == Dimension.Xyzm)
-                wkbWriter.Write(point.Z.Value);
+                wkbWriter.Write(point.Z ?? -double.NaN);
 
             if (dimension == Dimension.Xym || dimension == Dimension.Xyzm)
-                wkbWriter.Write(point.M.Value);
+                wkbWriter.Write(point.M ?? -double.NaN);
         }
 
         private void WriteLineString(LineString lineString)
