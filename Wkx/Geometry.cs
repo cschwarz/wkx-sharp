@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Text;
 
 namespace Wkx
 {
@@ -10,59 +12,26 @@ namespace Wkx
         public int? Srid { get; set; }
         public Dimension Dimension { get; set; }
 
-        public static Geometry Parse(string value)
+        public static Geometry Deserialize<T>(string value) where T : IGeometrySerializer
         {
-            if (value.StartsWith("SRID="))
-                return new EwktReader(value).Read();
-
-            return new WktReader(value).Read();
+            using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(value)))
+                return Deserialize<T>(stream);
         }
 
-        public static Geometry Parse(byte[] buffer)
+        public static Geometry Deserialize<T>(byte[] value) where T : IGeometrySerializer
         {
-            using (MemoryStream memoryStream = new MemoryStream(buffer))
-                return Parse(memoryStream);
+            using (MemoryStream stream = new MemoryStream(value))
+                return Deserialize<T>(stream);
         }
 
-        public static Geometry Parse(Stream stream)
+        public static Geometry Deserialize<T>(Stream stream) where T : IGeometrySerializer
         {
-            bool isEwkb = false;
-
-            using (EndianBinaryReader binaryReader = new EndianBinaryReader(stream))
-            {
-                binaryReader.IsBigEndian = !binaryReader.ReadBoolean();
-                uint wkbType = binaryReader.ReadUInt32();
-                isEwkb = (wkbType & EwkbFlags.HasSrid) == EwkbFlags.HasSrid ||
-                    (wkbType & EwkbFlags.HasZ) == EwkbFlags.HasZ ||
-                    (wkbType & EwkbFlags.HasM) == EwkbFlags.HasM;
-
-                stream.Position = 0;
-
-                if (isEwkb)
-                    return new EwkbReader(stream).Read();
-
-                return new WkbReader(stream).Read();
-            }
+            return Activator.CreateInstance<T>().Deserialize(stream);
         }
 
-        public string ToWkt()
+        public void Serialize<T>(Stream stream) where T : IGeometrySerializer
         {
-            return new WktWriter().Write(this);
-        }
-
-        public string ToEwkt()
-        {
-            return new EwktWriter().Write(this);
-        }
-
-        public byte[] ToWkb()
-        {
-            return new WkbWriter().Write(this);
-        }
-
-        public byte[] ToEwkb()
-        {
-            return new EwkbWriter().Write(this);
+            Activator.CreateInstance<T>().Serialize(this, stream);
         }
     }
 }

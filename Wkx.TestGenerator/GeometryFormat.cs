@@ -21,8 +21,8 @@
 
         public string GenerateSql()
         {
-            string targetSql = string.Format("{0}(ST_GeomFromText(@input{1}){2})", SqlAsFunction, 
-                Srid.HasValue ? string.Concat(", ", Srid.Value.ToString()) : string.Empty, 
+            string targetSql = string.Format("{0}(ST_GeomFromText(@input{1}){2})", SqlAsFunction,
+                Srid.HasValue ? string.Concat(", ", Srid.Value.ToString()) : string.Empty,
                 string.IsNullOrEmpty(SqlAdditionalFlags) ? string.Empty : string.Concat(", ", SqlAdditionalFlags));
 
             string targetAsText = string.Format("ST_AsText({0}({1}))", SqlFromFunction, targetSql);

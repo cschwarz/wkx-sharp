@@ -39,12 +39,14 @@
     <Compile Include="Ewkb\EwkbFlags.cs" />
     <Compile Include="Ewkb\EwkbReader.cs" />
     <Compile Include="Ewkb\EwkbWriter.cs" />
+    <Compile Include="Ewkb\EwkbSerializer.cs" />
     <Compile Include="Ewkt\EwktReader.cs" />
     <Compile Include="Ewkt\EwktWriter.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Ewkt\EwktSerializer.cs" />
     <Compile Include="Geometry.cs" />
     <Compile Include="GeometryCollection.cs" />
     <Compile Include="GeometryType.cs" />
+    <Compile Include="IGeometrySerializer.cs" />
     <Compile Include="LineString.cs" />
     <Compile Include="MultiLineString.cs" />
     <Compile Include="MultiPoint.cs" />
@@ -53,7 +55,9 @@
     <Compile Include="Polygon.cs" />
     <Compile Include="Wkb\WkbReader.cs" />
     <Compile Include="Wkb\WkbWriter.cs" />
+    <Compile Include="Wkb\WkbSerializer.cs" />
     <Compile Include="Wkt\WktReader.cs" />
+    <Compile Include="Wkt\WktSerializer.cs" />
     <Compile Include="Wkt\WktWriter.cs" />
     <Compile Include="ZigZag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
