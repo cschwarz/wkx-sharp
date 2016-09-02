@@ -28,7 +28,7 @@ namespace Wkx
             : this(input, encoding, false, isBigEndian)
         {
         }
-        
+
         public EndianBinaryReader(Stream input, Encoding encoding, bool leaveOpen, bool isBigEndian)
             : base(input, encoding, leaveOpen)
         {

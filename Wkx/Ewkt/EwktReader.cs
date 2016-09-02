@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Wkx
@@ -55,7 +54,7 @@ namespace Wkx
 
             geometryDimension = Dimension.Xy;
             match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)");
-            return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture));            
+            return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture));
         }
     }
 }

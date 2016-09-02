@@ -96,7 +96,7 @@ namespace Wkx
                 WriteWktCoordinates(interiorRing);
                 wktBuilder.Append("),");
             }
-            
+
             wktBuilder.Remove(wktBuilder.Length - 1, 1);
             wktBuilder.Append(")");
         }

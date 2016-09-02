@@ -114,6 +114,6 @@ namespace Wkx.Tests
             geometry.Srid = 4326;
 
             Assert.Equal(resultProperty(testCase.Data), serializeFunction(geometry));
-        }        
+        }
     }
 }

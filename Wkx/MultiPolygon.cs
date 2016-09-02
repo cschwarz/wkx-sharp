@@ -15,7 +15,7 @@ namespace Wkx
         {
             Polygons = new List<Polygon>();
         }
-        
+
         public override bool Equals(object obj)
         {
             if (obj == null)

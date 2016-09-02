@@ -15,7 +15,7 @@ namespace Wkx
         {
             Geometries = new List<Geometry>();
         }
-        
+
         public override bool Equals(object obj)
         {
             if (obj == null)

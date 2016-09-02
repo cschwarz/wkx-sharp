@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Wkx
+﻿namespace Wkx
 {
     public enum Dimension
     {

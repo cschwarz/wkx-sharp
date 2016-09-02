@@ -7,7 +7,7 @@ namespace Wkx
     internal class WkbWriter
     {
         protected BinaryWriter wkbWriter;
-        
+
         internal byte[] Write(Geometry geometry)
         {
             using (MemoryStream memoryStream = new MemoryStream())
@@ -16,7 +16,7 @@ namespace Wkx
                 WriteInternal(geometry);
 
                 return memoryStream.ToArray();
-            }               
+            }
         }
 
         protected virtual void WriteWkbType(GeometryType geometryType, Dimension dimension, int? srid)
@@ -55,7 +55,7 @@ namespace Wkx
         }
 
         private void WritePoint(Point point, Dimension dimension)
-        {            
+        {
             wkbWriter.Write(point.X ?? -double.NaN);
             wkbWriter.Write(point.Y ?? -double.NaN);
 

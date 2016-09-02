@@ -20,7 +20,7 @@ namespace Wkx
         {
             Points = new List<Point>(points);
         }
-        
+
         public override bool Equals(object obj)
         {
             if (obj == null)

@@ -7,9 +7,9 @@ namespace Wkx
         public abstract GeometryType GeometryType { get; }
         public abstract bool IsEmpty { get; }
 
-        public int? Srid { get; set; }        
+        public int? Srid { get; set; }
         public Dimension Dimension { get; set; }
-        
+
         public static Geometry Parse(string value)
         {
             if (value.StartsWith("SRID="))

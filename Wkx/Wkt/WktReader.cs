@@ -9,7 +9,7 @@ namespace Wkx
     internal class WktReader
     {
         private static readonly string[] wktTypes;
-        
+
         private string value;
         private int position;
 
@@ -65,7 +65,7 @@ namespace Wkx
 
             return geometry;
         }
-        
+
         protected Point ReadPoint(Dimension dimension)
         {
             ExpectGroupStart();
@@ -185,7 +185,7 @@ namespace Wkx
             if (dimensionMatch == null)
                 return Dimension.Xy;
 
-            switch(dimensionMatch)
+            switch (dimensionMatch)
             {
                 case "Z": return Dimension.Xyz;
                 case "M": return Dimension.Xym;
@@ -256,7 +256,7 @@ namespace Wkx
         }
 
         protected string Match(params string[] tokens)
-        {            
+        {
             SkipWhitespaces();
 
             for (int i = 0; i < tokens.Length; i++)

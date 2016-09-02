@@ -15,7 +15,7 @@ namespace Wkx
         {
             LineStrings = new List<LineString>();
         }
-        
+
         public override bool Equals(object obj)
         {
             if (obj == null)

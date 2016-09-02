@@ -23,7 +23,7 @@ namespace Wkx
             ExteriorRing = new List<Point>(exteriorRing);
             InteriorRings = new List<List<Point>>();
         }
-        
+
         public override bool Equals(object obj)
         {
             if (obj == null)
