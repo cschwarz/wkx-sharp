@@ -6,7 +6,11 @@
     <title>Wkx</title>
     <description>A WKT/WKB/EWKT/EWKB parser and serializer.</description>
     <authors>Christian Schwarz</authors>
+    <owners>Christian Schwarz</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>    
     <tags>WKT WKB EWKT EWKB OGC Geometry Geography Spatial</tags>
+    <copyright>Copyright 2016</copyright>
+    <projectUrl>https://github.com/cschwarz/wkx-sharp</projectUrl>
+    <licenseUrl>https://raw.githubusercontent.com/cschwarz/wkx-sharp/master/LICENSE</licenseUrl>
   </metadata>
 </package>
