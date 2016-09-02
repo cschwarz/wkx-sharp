@@ -31,7 +31,10 @@ namespace Wkx
             using (EndianBinaryReader binaryReader = new EndianBinaryReader(stream))
             {
                 binaryReader.IsBigEndian = !binaryReader.ReadBoolean();
-                isEwkb = (binaryReader.ReadUInt32() & EwkbFlags.HasSrid) == EwkbFlags.HasSrid;
+                uint wkbType = binaryReader.ReadUInt32();
+                isEwkb = (wkbType & EwkbFlags.HasSrid) == EwkbFlags.HasSrid ||
+                    (wkbType & EwkbFlags.HasZ) == EwkbFlags.HasZ ||
+                    (wkbType & EwkbFlags.HasM) == EwkbFlags.HasM;
 
                 stream.Position = 0;
 

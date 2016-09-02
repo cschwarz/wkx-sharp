@@ -69,6 +69,20 @@ namespace Wkx.Tests
 
         [Theory]
         [MemberData("TestData")]
+        public void ParseEwkbNoSrid(TestCase testCase)
+        {
+            ParseTest(testCase, t => t.EwkbNoSrid, true);
+        }
+
+        [Theory]
+        [MemberData("TestData")]
+        public void ParseEwkbXdrNoSrid(TestCase testCase)
+        {
+            ParseTest(testCase, t => t.EwkbXdrNoSrid, true);
+        }
+
+        [Theory]
+        [MemberData("TestData")]
         public void ToWkt(TestCase testCase)
         {
             SerializeTest(testCase, g => g.ToWkt(), t => t.Wkt);

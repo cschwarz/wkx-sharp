@@ -16,7 +16,10 @@ namespace Wkx.TestGenerator
             new GeometryFormat("wkb", "ST_AsBinary", "ST_GeomFromWKB", true),
             new GeometryFormat("ewkb", "ST_AsEWKB", "ST_GeomFromEWKB", true, 4326),
             new GeometryFormat("wkbXdr", "ST_AsBinary", "ST_GeomFromWKB", true, null, "'xdr'"),
-            new GeometryFormat("ewkbXdr", "ST_AsEWKB", "ST_GeomFromEWKB", true, 4326, "'xdr'")
+            new GeometryFormat("ewkbXdr", "ST_AsEWKB", "ST_GeomFromEWKB", true, 4326, "'xdr'"),
+            new GeometryFormat("ewkbNoSrid", "ST_AsEWKB", "ST_GeomFromEWKB", true),
+            new GeometryFormat("ewkbXdrNoSrid", "ST_AsEWKB", "ST_GeomFromEWKB", true, null, "'xdr'")
+
             //new GeometryFormat("twkb", "ST_AsTWKB", "ST_GeomFromTWKB", true),
             //new GeometryFormat("geojson", "ST_AsGeoJSON", "ST_GeomFromGeoJSON", false)
         };
