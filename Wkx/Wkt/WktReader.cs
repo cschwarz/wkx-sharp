@@ -33,6 +33,24 @@ namespace Wkx
             if (IsEmpty())
                 return geometry;
 
+            return Read(geometryType, dimension);
+        }
+
+        protected virtual Geometry ReadType(GeometryType defaultType, Dimension defaultDimension, params GeometryType[] types)
+        {
+            GeometryType geometryType = MatchTypeOrDefault(defaultType, types);
+            Dimension dimension = MatchDimension(defaultDimension);
+
+            Geometry geometry = CreateGeometry(geometryType, dimension);
+
+            if (IsEmpty())
+                return geometry;
+
+            return Read(geometryType, dimension);
+        }
+
+        protected Geometry Read(GeometryType geometryType, Dimension dimension)
+        {
             switch (geometryType)
             {
                 case GeometryType.Point: return ReadPoint(dimension);
@@ -43,6 +61,7 @@ namespace Wkx
                 case GeometryType.MultiPolygon: return ReadMultiPolygon(dimension);
                 case GeometryType.GeometryCollection: return ReadGeometryCollection(dimension);
                 case GeometryType.CircularString: return ReadCircularString(dimension);
+                case GeometryType.CompoundCurve: return ReadCompoundCurve(dimension);
                 default: throw new NotSupportedException(geometryType.ToString());
             }
         }
@@ -61,6 +80,7 @@ namespace Wkx
                 case GeometryType.MultiPolygon: geometry = new MultiPolygon(); break;
                 case GeometryType.GeometryCollection: geometry = new GeometryCollection(); break;
                 case GeometryType.CircularString: geometry = new CircularString(); break;
+                case GeometryType.CompoundCurve: geometry = new CompoundCurve(); break;
                 default: throw new NotSupportedException(geometryType.ToString());
             }
 
@@ -181,6 +201,20 @@ namespace Wkx
             return circularString;
         }
 
+        protected CompoundCurve ReadCompoundCurve(Dimension dimension)
+        {
+            ExpectGroupStart();
+            CompoundCurve compoundCurve = new CompoundCurve();
+            compoundCurve.Dimension = dimension;
+
+            do
+            {
+                compoundCurve.Geometries.Add(ReadType(GeometryType.LineString, dimension, GeometryType.LineString, GeometryType.CircularString));
+            } while (IsMatch(","));
+
+            return compoundCurve;
+        }
+
         protected GeometryType MatchType()
         {
             GeometryType geometryType;
@@ -191,12 +225,22 @@ namespace Wkx
             return geometryType;
         }
 
-        protected Dimension MatchDimension()
+        protected GeometryType MatchTypeOrDefault(GeometryType defaultType, params GeometryType[] types)
+        {
+            GeometryType geometryType;
+
+            if (!Enum.TryParse<GeometryType>(Match(types.Select(t => t.ToString().ToUpperInvariant()).ToArray()), true, out geometryType))
+                return defaultType;
+
+            return geometryType;
+        }
+
+        protected Dimension MatchDimension(Dimension? defaultDimension = null)
         {
             string dimensionMatch = Match("ZM", "Z", "M");
 
             if (dimensionMatch == null)
-                return Dimension.Xy;
+                return defaultDimension.HasValue ? defaultDimension.Value : Dimension.Xy;
 
             switch (dimensionMatch)
             {

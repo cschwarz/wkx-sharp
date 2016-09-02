@@ -2,17 +2,20 @@
 {
     internal class EwktWriter : WktWriter
     {
-        internal override string Write(Geometry geometry)
+        internal override string Write(Geometry geometry, bool skipType = false)
         {
-            return string.Concat("SRID=", geometry.Srid, ";", base.Write(geometry));
+            return string.Concat("SRID=", geometry.Srid, ";", base.Write(geometry, skipType));
         }
 
-        protected override void WriteWktType(GeometryType geometryType, Dimension dimension, bool isEmpty)
+        protected override void WriteWktType(GeometryType geometryType, Dimension dimension, bool isEmpty, bool skipType = false)
         {
-            wktBuilder.Append(geometryType.ToString().ToUpperInvariant());
+            if (!skipType)
+            {
+                wktBuilder.Append(geometryType.ToString().ToUpperInvariant());
 
-            if (dimension == Dimension.Xym)
-                wktBuilder.Append("M");
+                if (dimension == Dimension.Xym)
+                    wktBuilder.Append("M");
+            }
 
             if (isEmpty)
                 wktBuilder.Append(" EMPTY");

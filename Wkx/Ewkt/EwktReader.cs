@@ -26,6 +26,15 @@ namespace Wkx
             return geometry;
         }
 
+        protected override Geometry ReadType(GeometryType defaultType, Dimension defaultDimension, params GeometryType[] types)
+        {
+            Geometry geometry = base.ReadType(defaultType, defaultDimension, types);
+
+            geometry.Dimension = geometryDimension.HasValue ? geometryDimension.Value : geometry.Dimension;
+
+            return geometry;
+        }
+
         protected override Point MatchCoordinate(Dimension dimension)
         {
             Match match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)");

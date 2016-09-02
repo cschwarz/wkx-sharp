@@ -33,6 +33,7 @@ namespace Wkx
                 case GeometryType.MultiPolygon: geometry = ReadMultiPolygon(dimension); break;
                 case GeometryType.GeometryCollection: geometry = ReadGeometryCollection(dimension); break;
                 case GeometryType.CircularString: geometry = ReadCircularString(dimension); break;
+                case GeometryType.CompoundCurve: geometry = ReadCompoundCurve(dimension); break;
                 default: throw new NotSupportedException(geometryType.ToString());
             }
 
@@ -176,6 +177,18 @@ namespace Wkx
                 circularString.Points.Add(ReadPoint(dimension));
 
             return circularString;
+        }
+
+        private CompoundCurve ReadCompoundCurve(Dimension dimension)
+        {
+            CompoundCurve compoundCurve = new CompoundCurve();
+
+            uint geometryCount = wkbReader.ReadUInt32();
+
+            for (int i = 0; i < geometryCount; i++)
+                compoundCurve.Geometries.Add(Read());
+
+            return compoundCurve;
         }
     }
 }

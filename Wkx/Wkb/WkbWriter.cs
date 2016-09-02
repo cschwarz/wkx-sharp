@@ -27,7 +27,7 @@ namespace Wkx
             {
                 case Dimension.Xyz: dimensionType = 1000; break;
                 case Dimension.Xym: dimensionType = 2000; break;
-                case Dimension.Xyzm: dimensionType = 3000; break;                
+                case Dimension.Xyzm: dimensionType = 3000; break;
             }
 
             wkbWriter.Write(dimensionType + (uint)geometryType);
@@ -51,6 +51,7 @@ namespace Wkx
                 case GeometryType.MultiPolygon: WriteMultiPolygon(geometry as MultiPolygon); break;
                 case GeometryType.GeometryCollection: WriteGeometryCollection(geometry as GeometryCollection); break;
                 case GeometryType.CircularString: WriteCircularString(geometry as CircularString); break;
+                case GeometryType.CompoundCurve: WriteCompoundCurve(geometry as CompoundCurve); break;
                 default: throw new NotSupportedException(geometry.GeometryType.ToString());
             }
         }
@@ -135,6 +136,14 @@ namespace Wkx
 
             foreach (Point point in circularString.Points)
                 WritePoint(point, circularString.Dimension);
+        }
+
+        private void WriteCompoundCurve(CompoundCurve compoundCurve)
+        {
+            wkbWriter.Write(compoundCurve.Geometries.Count);
+
+            foreach (Geometry geometry in compoundCurve.Geometries)
+                WriteInternal(geometry);
         }
     }
 }

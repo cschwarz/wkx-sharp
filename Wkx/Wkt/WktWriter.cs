@@ -14,9 +14,9 @@ namespace Wkx
             wktBuilder = new StringBuilder();
         }
 
-        internal virtual string Write(Geometry geometry)
+        internal virtual string Write(Geometry geometry, bool skipType = false)
         {
-            WriteWktType(geometry.GeometryType, geometry.Dimension, geometry.IsEmpty);
+            WriteWktType(geometry.GeometryType, geometry.Dimension, geometry.IsEmpty, skipType);
 
             if (geometry.IsEmpty)
                 return wktBuilder.ToString();
@@ -31,21 +31,25 @@ namespace Wkx
                 case GeometryType.MultiPolygon: WriteMultiPolygon(geometry as MultiPolygon); break;
                 case GeometryType.GeometryCollection: WriteGeometryCollection(geometry as GeometryCollection); break;
                 case GeometryType.CircularString: WriteCircularString(geometry as CircularString); break;
+                case GeometryType.CompoundCurve: WriteCompoundCurve(geometry as CompoundCurve); break;
                 default: throw new NotSupportedException(geometry.GeometryType.ToString());
             }
 
             return wktBuilder.ToString();
         }
 
-        protected virtual void WriteWktType(GeometryType geometryType, Dimension dimension, bool isEmpty)
+        protected virtual void WriteWktType(GeometryType geometryType, Dimension dimension, bool isEmpty, bool skipType = false)
         {
-            wktBuilder.Append(geometryType.ToString().ToUpperInvariant());
-
-            switch (dimension)
+            if (!skipType)
             {
-                case Dimension.Xyz: wktBuilder.Append(" Z "); break;
-                case Dimension.Xym: wktBuilder.Append(" M "); break;
-                case Dimension.Xyzm: wktBuilder.Append(" ZM "); break;
+                wktBuilder.Append(geometryType.ToString().ToUpperInvariant());
+
+                switch (dimension)
+                {
+                    case Dimension.Xyz: wktBuilder.Append(" Z "); break;
+                    case Dimension.Xym: wktBuilder.Append(" M "); break;
+                    case Dimension.Xyzm: wktBuilder.Append(" ZM "); break;
+                }
             }
 
             if (isEmpty && dimension == Dimension.Xy)
@@ -155,6 +159,20 @@ namespace Wkx
         {
             wktBuilder.Append("(");
             WriteWktCoordinates(circularString.Points);
+            wktBuilder.Append(")");
+        }
+
+        private void WriteCompoundCurve(CompoundCurve compoundCurve)
+        {
+            wktBuilder.Append("(");
+
+            foreach (Geometry geometry in compoundCurve.Geometries)
+            {
+                Write(geometry, geometry.GeometryType == GeometryType.LineString);
+                wktBuilder.Append(",");
+            }
+
+            wktBuilder.Remove(wktBuilder.Length - 1, 1);
             wktBuilder.Append(")");
         }
     }

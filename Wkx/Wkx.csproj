@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CompoundCurve.cs" />
     <Compile Include="Dimension.cs" />
     <Compile Include="EndianBinaryReader.cs" />
     <Compile Include="Ewkb\EwkbFlags.cs" />
