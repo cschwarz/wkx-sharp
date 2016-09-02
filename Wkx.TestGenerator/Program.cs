@@ -76,7 +76,7 @@ namespace Wkx.TestGenerator
                 }
             }
 
-            File.WriteAllText("testdata.json", JsonConvert.SerializeObject(testOutputData, Formatting.Indented));
+            File.WriteAllText("../../../Wkx.Tests/testdata.json", JsonConvert.SerializeObject(testOutputData, Formatting.Indented));
         }
 
         private static string GenerateTestSql(IEnumerable<GeometryFormat> geometryFormats)
