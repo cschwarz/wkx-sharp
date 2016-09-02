@@ -6,20 +6,24 @@
         public string SqlAsFunction { get; private set; }
         public string SqlFromFunction { get; private set; }
         public bool IsBinary { get; private set; }
+        public int? Srid { get; set; }
         public string SqlAdditionalFlags { get; private set; }
 
-        public GeometryFormat(string name, string sqlAsFunction, string sqlFromFunction, bool isBinary, string sqlAdditionalFlags = null)
+        public GeometryFormat(string name, string sqlAsFunction, string sqlFromFunction, bool isBinary, int? srid = null, string sqlAdditionalFlags = null)
         {
             Name = name;
             SqlAsFunction = sqlAsFunction;
             SqlFromFunction = sqlFromFunction;
             IsBinary = isBinary;
+            Srid = srid;
             SqlAdditionalFlags = sqlAdditionalFlags;
         }
 
         public string GenerateSql()
         {
-            string targetSql = string.Format("{0}(ST_GeomFromText(@input, 4326){1})", SqlAsFunction, string.IsNullOrEmpty(SqlAdditionalFlags) ? string.Empty : string.Concat(", ", SqlAdditionalFlags));
+            string targetSql = string.Format("{0}(ST_GeomFromText(@input{1}){2})", SqlAsFunction, 
+                Srid.HasValue ? string.Concat(", ", Srid.Value.ToString()) : string.Empty, 
+                string.IsNullOrEmpty(SqlAdditionalFlags) ? string.Empty : string.Concat(", ", SqlAdditionalFlags));
 
             string targetAsText = string.Format("ST_AsText({0}({1}))", SqlFromFunction, targetSql);
 

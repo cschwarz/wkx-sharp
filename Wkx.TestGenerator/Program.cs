@@ -12,11 +12,11 @@ namespace Wkx.TestGenerator
         static IEnumerable<GeometryFormat> geometryFormats = new List<GeometryFormat>()
         {
             new GeometryFormat("wkt", "ST_AsText", "ST_GeomFromText", false),
-            new GeometryFormat("ewkt", "ST_AsEWKT", "ST_GeomFromEWKT", false),
+            new GeometryFormat("ewkt", "ST_AsEWKT", "ST_GeomFromEWKT", false, 4326),
             new GeometryFormat("wkb", "ST_AsBinary", "ST_GeomFromWKB", true),
-            new GeometryFormat("ewkb", "ST_AsEWKB", "ST_GeomFromEWKB", true),
-            new GeometryFormat("wkbXdr", "ST_AsBinary", "ST_GeomFromWKB", true, "'xdr'"),
-            new GeometryFormat("ewkbXdr", "ST_AsEWKB", "ST_GeomFromEWKB", true, "'xdr'")
+            new GeometryFormat("ewkb", "ST_AsEWKB", "ST_GeomFromEWKB", true, 4326),
+            new GeometryFormat("wkbXdr", "ST_AsBinary", "ST_GeomFromWKB", true, null, "'xdr'"),
+            new GeometryFormat("ewkbXdr", "ST_AsEWKB", "ST_GeomFromEWKB", true, 4326, "'xdr'")
             //new GeometryFormat("twkb", "ST_AsTWKB", "ST_GeomFromTWKB", true),
             //new GeometryFormat("geojson", "ST_AsGeoJSON", "ST_GeomFromGeoJSON", false)
         };
