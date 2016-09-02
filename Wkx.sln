@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wkx", "Wkx\Wkx.csproj", "{E6795DCB-2AFA-4DCB-88D4-3F76E79E2BEC}"
 EndProject
@@ -10,11 +10,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		appveyor.yml = appveyor.yml
 		README.md = README.md
+		version.txt = version.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wkx.Tests", "Wkx.Tests\Wkx.Tests.csproj", "{E495F89A-8F95-4E60-950A-9C84DBEF8912}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wkx.TestGenerator", "Wkx.TestGenerator\Wkx.TestGenerator.csproj", "{4D652D30-4F9F-4E72-A0D9-DA50BF0B66F8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{818A4ED7-53DE-49F2-924E-D84D120DCAD3}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\update-version.ps1 = scripts\update-version.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
