@@ -32,7 +32,7 @@ namespace Wkx
                 case GeometryType.MultiLineString: geometry = ReadMultiLineString(dimension); break;
                 case GeometryType.MultiPolygon: geometry = ReadMultiPolygon(dimension); break;
                 case GeometryType.GeometryCollection: geometry = ReadGeometryCollection(dimension); break;
-                default: throw new Exception();
+                default: throw new NotSupportedException(geometryType.ToString());
             }
 
             geometry.Dimension = dimension;
@@ -76,7 +76,7 @@ namespace Wkx
                 case Dimension.Xyz: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble());
                 case Dimension.Xym: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), null, wkbReader.ReadDouble());
                 case Dimension.Xyzm: return new Point(wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble(), wkbReader.ReadDouble());
-                default: throw new Exception();
+                default: throw new NotSupportedException(dimension.ToString());
             }
         }
 

@@ -42,7 +42,7 @@ namespace Wkx
                 case GeometryType.MultiLineString: return ReadMultiLineString(dimension);
                 case GeometryType.MultiPolygon: return ReadMultiPolygon(dimension);
                 case GeometryType.GeometryCollection: return ReadGeometryCollection(dimension);
-                default: throw new Exception();
+                default: throw new NotSupportedException(geometryType.ToString());
             }
         }
 
@@ -59,6 +59,7 @@ namespace Wkx
                 case GeometryType.MultiLineString: geometry = new MultiLineString(); break;
                 case GeometryType.MultiPolygon: geometry = new MultiPolygon(); break;
                 case GeometryType.GeometryCollection: geometry = new GeometryCollection(); break;
+                default: throw new NotSupportedException(geometryType.ToString());
             }
 
             geometry.Dimension = dimension;
@@ -190,7 +191,7 @@ namespace Wkx
                 case "Z": return Dimension.Xyz;
                 case "M": return Dimension.Xym;
                 case "ZM": return Dimension.Xyzm;
-                default: throw new Exception();
+                default: throw new NotSupportedException(dimensionMatch.ToString());
             }
         }
 
@@ -216,7 +217,7 @@ namespace Wkx
                 case Dimension.Xyz:
                 case Dimension.Xym: match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)"); break;
                 case Dimension.Xyzm: match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)"); break;
-                default: throw new Exception();
+                default: throw new NotSupportedException(dimension.ToString());
             }
 
             if (!match.Success)
@@ -228,7 +229,7 @@ namespace Wkx
                 case Dimension.Xyz: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
                 case Dimension.Xym: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), null, double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
                 case Dimension.Xyzm: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[4].Value, CultureInfo.InvariantCulture));
-                default: throw new Exception();
+                default: throw new NotSupportedException(dimension.ToString());
             }
         }
 

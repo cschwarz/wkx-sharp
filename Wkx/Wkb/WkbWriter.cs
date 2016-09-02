@@ -27,7 +27,7 @@ namespace Wkx
             {
                 case Dimension.Xyz: dimensionType = 1000; break;
                 case Dimension.Xym: dimensionType = 2000; break;
-                case Dimension.Xyzm: dimensionType = 3000; break;
+                case Dimension.Xyzm: dimensionType = 3000; break;                
             }
 
             wkbWriter.Write(dimensionType + (uint)geometryType);
@@ -50,7 +50,7 @@ namespace Wkx
                 case GeometryType.MultiLineString: WriteMultiLineString(geometry as MultiLineString); break;
                 case GeometryType.MultiPolygon: WriteMultiPolygon(geometry as MultiPolygon); break;
                 case GeometryType.GeometryCollection: WriteGeometryCollection(geometry as GeometryCollection); break;
-                default: throw new Exception();
+                default: throw new NotSupportedException(geometry.GeometryType.ToString());
             }
         }
 

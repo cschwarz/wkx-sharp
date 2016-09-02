@@ -30,7 +30,7 @@ namespace Wkx
                 case GeometryType.MultiLineString: WriteMultiLineString(geometry as MultiLineString); break;
                 case GeometryType.MultiPolygon: WriteMultiPolygon(geometry as MultiPolygon); break;
                 case GeometryType.GeometryCollection: WriteGeometryCollection(geometry as GeometryCollection); break;
-                default: throw new Exception();
+                default: throw new NotSupportedException(geometry.GeometryType.ToString());
             }
 
             return wktBuilder.ToString();
