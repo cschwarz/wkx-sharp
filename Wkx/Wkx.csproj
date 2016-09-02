@@ -47,6 +47,7 @@
     <Compile Include="GeometryCollection.cs" />
     <Compile Include="GeometryType.cs" />
     <Compile Include="IGeometrySerializer.cs" />
+    <Compile Include="CircularString.cs" />
     <Compile Include="LineString.cs" />
     <Compile Include="MultiLineString.cs" />
     <Compile Include="MultiPoint.cs" />

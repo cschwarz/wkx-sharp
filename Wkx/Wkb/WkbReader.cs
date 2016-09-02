@@ -32,6 +32,7 @@ namespace Wkx
                 case GeometryType.MultiLineString: geometry = ReadMultiLineString(dimension); break;
                 case GeometryType.MultiPolygon: geometry = ReadMultiPolygon(dimension); break;
                 case GeometryType.GeometryCollection: geometry = ReadGeometryCollection(dimension); break;
+                case GeometryType.CircularString: geometry = ReadCircularString(dimension); break;
                 default: throw new NotSupportedException(geometryType.ToString());
             }
 
@@ -163,6 +164,18 @@ namespace Wkx
                 geometryCollection.Geometries.Add(Read());
 
             return geometryCollection;
+        }
+
+        private CircularString ReadCircularString(Dimension dimension)
+        {
+            CircularString circularString = new CircularString();
+
+            uint pointCount = wkbReader.ReadUInt32();
+
+            for (int i = 0; i < pointCount; i++)
+                circularString.Points.Add(ReadPoint(dimension));
+
+            return circularString;
         }
     }
 }

@@ -42,6 +42,7 @@ namespace Wkx
                 case GeometryType.MultiLineString: return ReadMultiLineString(dimension);
                 case GeometryType.MultiPolygon: return ReadMultiPolygon(dimension);
                 case GeometryType.GeometryCollection: return ReadGeometryCollection(dimension);
+                case GeometryType.CircularString: return ReadCircularString(dimension);
                 default: throw new NotSupportedException(geometryType.ToString());
             }
         }
@@ -59,6 +60,7 @@ namespace Wkx
                 case GeometryType.MultiLineString: geometry = new MultiLineString(); break;
                 case GeometryType.MultiPolygon: geometry = new MultiPolygon(); break;
                 case GeometryType.GeometryCollection: geometry = new GeometryCollection(); break;
+                case GeometryType.CircularString: geometry = new CircularString(); break;
                 default: throw new NotSupportedException(geometryType.ToString());
             }
 
@@ -167,6 +169,16 @@ namespace Wkx
             ExpectGroupEnd();
 
             return geometryCollection;
+        }
+
+        protected CircularString ReadCircularString(Dimension dimension)
+        {
+            ExpectGroupStart();
+            CircularString circularString = new CircularString(MatchCoordinates(dimension));
+            circularString.Dimension = dimension;
+            ExpectGroupEnd();
+
+            return circularString;
         }
 
         protected GeometryType MatchType()

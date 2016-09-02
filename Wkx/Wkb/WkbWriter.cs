@@ -50,6 +50,7 @@ namespace Wkx
                 case GeometryType.MultiLineString: WriteMultiLineString(geometry as MultiLineString); break;
                 case GeometryType.MultiPolygon: WriteMultiPolygon(geometry as MultiPolygon); break;
                 case GeometryType.GeometryCollection: WriteGeometryCollection(geometry as GeometryCollection); break;
+                case GeometryType.CircularString: WriteCircularString(geometry as CircularString); break;
                 default: throw new NotSupportedException(geometry.GeometryType.ToString());
             }
         }
@@ -126,6 +127,14 @@ namespace Wkx
 
             foreach (Geometry geometry in geometryCollection.Geometries)
                 WriteInternal(geometry);
+        }
+
+        private void WriteCircularString(CircularString circularString)
+        {
+            wkbWriter.Write(circularString.Points.Count);
+
+            foreach (Point point in circularString.Points)
+                WritePoint(point, circularString.Dimension);
         }
     }
 }
