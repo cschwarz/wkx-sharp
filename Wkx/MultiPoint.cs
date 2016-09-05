@@ -12,8 +12,8 @@ namespace Wkx
         public List<Point> Points { get; private set; }
 
         public MultiPoint()
+            : this(new List<Point>())
         {
-            Points = new List<Point>();
         }
 
         public MultiPoint(IEnumerable<Point> points)
