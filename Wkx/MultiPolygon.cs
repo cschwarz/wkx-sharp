@@ -10,7 +10,7 @@ namespace Wkx
         public override bool IsEmpty { get { return !Polygons.Any(); } }
 
         public List<Polygon> Polygons { get; private set; }
-        
+
         public MultiPolygon()
             : this(new List<Polygon>())
         {

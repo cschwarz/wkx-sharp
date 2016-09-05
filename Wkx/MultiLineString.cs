@@ -10,7 +10,7 @@ namespace Wkx
         public override bool IsEmpty { get { return !LineStrings.Any(); } }
 
         public List<LineString> LineStrings { get; private set; }
-        
+
         public MultiLineString()
             : this(new List<LineString>())
         {

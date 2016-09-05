@@ -21,7 +21,7 @@ namespace Wkx
             : this(exteriorRing, new List<List<Point>>())
         {
         }
-        
+
         public Polygon(IEnumerable<Point> exteriorRing, IEnumerable<List<Point>> interiorRings)
         {
             ExteriorRing = new List<Point>(exteriorRing);
