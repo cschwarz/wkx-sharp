@@ -12,8 +12,13 @@ namespace Wkx
         public List<Geometry> Geometries { get; private set; }
 
         public GeometryCollection()
+            : this(new List<Geometry>())
         {
-            Geometries = new List<Geometry>();
+        }
+
+        public GeometryCollection(IEnumerable<Geometry> geometries)
+        {
+            Geometries = new List<Geometry>(geometries);
         }
 
         public override bool Equals(object obj)

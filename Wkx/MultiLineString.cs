@@ -10,10 +10,15 @@ namespace Wkx
         public override bool IsEmpty { get { return !LineStrings.Any(); } }
 
         public List<LineString> LineStrings { get; private set; }
-
+        
         public MultiLineString()
+            : this(new List<LineString>())
         {
-            LineStrings = new List<LineString>();
+        }
+
+        public MultiLineString(IEnumerable<LineString> lineStrings)
+        {
+            LineStrings = new List<LineString>(lineStrings);
         }
 
         public override bool Equals(object obj)

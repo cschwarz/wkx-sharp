@@ -12,8 +12,8 @@ namespace Wkx
         public List<Point> Points { get; private set; }
 
         public LineString()
+            : this(new List<Point>())
         {
-            Points = new List<Point>();
         }
 
         public LineString(IEnumerable<Point> points)

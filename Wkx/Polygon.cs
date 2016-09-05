@@ -13,15 +13,19 @@ namespace Wkx
         public List<List<Point>> InteriorRings { get; private set; }
 
         public Polygon()
+            : this(new List<Point>())
         {
-            ExteriorRing = new List<Point>();
-            InteriorRings = new List<List<Point>>();
         }
 
         public Polygon(IEnumerable<Point> exteriorRing)
+            : this(exteriorRing, new List<List<Point>>())
+        {
+        }
+        
+        public Polygon(IEnumerable<Point> exteriorRing, IEnumerable<List<Point>> interiorRings)
         {
             ExteriorRing = new List<Point>(exteriorRing);
-            InteriorRings = new List<List<Point>>();
+            InteriorRings = new List<List<Point>>(interiorRings);
         }
 
         public override bool Equals(object obj)

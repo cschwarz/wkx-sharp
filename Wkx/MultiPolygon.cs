@@ -10,10 +10,15 @@ namespace Wkx
         public override bool IsEmpty { get { return !Polygons.Any(); } }
 
         public List<Polygon> Polygons { get; private set; }
-
+        
         public MultiPolygon()
+            : this(new List<Polygon>())
         {
-            Polygons = new List<Polygon>();
+        }
+
+        public MultiPolygon(IEnumerable<Polygon> polygons)
+        {
+            Polygons = new List<Polygon>(polygons);
         }
 
         public override bool Equals(object obj)
