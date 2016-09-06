@@ -22,6 +22,15 @@ namespace Wkx
             Y = y;
             Z = z;
             M = m;
+
+            if (z.HasValue && m.HasValue)
+                Dimension = Dimension.Xyzm;
+            else if (z.HasValue)
+                Dimension = Dimension.Xyz;
+            else if (m.HasValue)
+                Dimension = Dimension.Xym;
+            else
+                Dimension = Dimension.Xy;
         }
 
         public override bool Equals(object obj)

@@ -26,6 +26,9 @@ namespace Wkx
         {
             ExteriorRing = new List<Point>(exteriorRing);
             InteriorRings = new List<List<Point>>(interiorRings);
+            
+            if (ExteriorRing.Any())
+                Dimension = ExteriorRing.First().Dimension;
         }
 
         public override bool Equals(object obj)

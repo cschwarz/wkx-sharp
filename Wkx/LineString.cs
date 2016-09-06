@@ -19,6 +19,9 @@ namespace Wkx
         public LineString(IEnumerable<Point> points)
         {
             Points = new List<Point>(points);
+
+            if (Points.Any())
+                Dimension = Points.First().Dimension;
         }
 
         public override bool Equals(object obj)

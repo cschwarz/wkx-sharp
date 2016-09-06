@@ -19,6 +19,9 @@ namespace Wkx
         public MultiPolygon(IEnumerable<Polygon> polygons)
         {
             Polygons = new List<Polygon>(polygons);
+
+            if (Polygons.Any())
+                Dimension = Polygons.First().Dimension;
         }
 
         public override bool Equals(object obj)

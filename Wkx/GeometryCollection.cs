@@ -19,6 +19,9 @@ namespace Wkx
         public GeometryCollection(IEnumerable<Geometry> geometries)
         {
             Geometries = new List<Geometry>(geometries);
+
+            if (Geometries.Any())
+                Dimension = Geometries.First().Dimension;
         }
 
         public override bool Equals(object obj)
