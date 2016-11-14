@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -57,13 +58,13 @@ namespace Wkx
         private string GetWktCoordinate(Point coordinate)
         {
             if (coordinate.Z.HasValue && coordinate.M.HasValue)
-                return string.Format("{0} {1} {2} {3}", coordinate.X, coordinate.Y, coordinate.Z, coordinate.M);
+                return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2} {3}", coordinate.X, coordinate.Y, coordinate.Z, coordinate.M);
             else if (coordinate.Z.HasValue)
-                return string.Format("{0} {1} {2}", coordinate.X, coordinate.Y, coordinate.Z);
+                return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", coordinate.X, coordinate.Y, coordinate.Z);
             else if (coordinate.M.HasValue)
-                return string.Format("{0} {1} {2}", coordinate.X, coordinate.Y, coordinate.M);
+                return string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", coordinate.X, coordinate.Y, coordinate.M);
 
-            return string.Format("{0} {1}", coordinate.X, coordinate.Y);
+            return string.Format(CultureInfo.InvariantCulture, "{0} {1}", coordinate.X, coordinate.Y);
         }
 
         private void WriteWktCoordinates(IEnumerable<Point> coordinates)
