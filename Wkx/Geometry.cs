@@ -33,5 +33,24 @@ namespace Wkx
         {
             Activator.CreateInstance<T>().Serialize(this, stream);
         }
+
+        public string SerializeString<T>() where T : IGeometrySerializer
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                Serialize<T>(memoryStream);
+                byte[] data = memoryStream.ToArray();
+                return Encoding.UTF8.GetString(data, 0, data.Length);
+            }
+        }
+
+        public byte[] SerializeByteArray<T>() where T : IGeometrySerializer
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                Serialize<T>(memoryStream);
+                return memoryStream.ToArray();
+            }
+        }
     }
 }
