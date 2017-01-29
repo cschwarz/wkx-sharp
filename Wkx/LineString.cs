@@ -43,5 +43,15 @@ namespace Wkx
         {
             return new { Points }.GetHashCode();
         }
+
+        public override Point GetCenter()
+        {
+            return Points.GetCenter();
+        }
+
+        public override BoundingBox GetBoundingBox()
+        {
+            return Points.GetBoundingBox();
+        }
     }
 }

@@ -64,6 +64,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="GeometryCollectionTest.cs" />
+    <Compile Include="LineStringTest.cs" />
+    <Compile Include="MultiLineStringTest.cs" />
+    <Compile Include="MultiPointTest.cs" />
+    <Compile Include="MultiPoylgonTest.cs" />
+    <Compile Include="PointTest.cs" />
+    <Compile Include="PolygonTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestCase.cs" />
     <Compile Include="TestCaseData.cs" />

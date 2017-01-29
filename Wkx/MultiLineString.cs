@@ -43,5 +43,15 @@ namespace Wkx
         {
             return new { LineStrings }.GetHashCode();
         }
+
+        public override Point GetCenter()
+        {
+            return LineStrings.Select(l => l.GetCenter()).GetCenter();
+        }
+
+        public override BoundingBox GetBoundingBox()
+        {
+            return LineStrings.Select(l => l.GetBoundingBox()).GetBoundingBox();
+        }
     }
 }

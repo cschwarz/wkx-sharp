@@ -12,6 +12,9 @@ namespace Wkx
         public int? Srid { get; set; }
         public Dimension Dimension { get; set; }
 
+        public abstract Point GetCenter();
+        public abstract BoundingBox GetBoundingBox();
+
         public static Geometry Deserialize<T>(string value) where T : IGeometrySerializer
         {
             using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(value)))

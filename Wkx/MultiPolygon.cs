@@ -43,5 +43,15 @@ namespace Wkx
         {
             return new { Polygons }.GetHashCode();
         }
+
+        public override Point GetCenter()
+        {
+            return Polygons.Select(p => p.GetCenter()).GetCenter();
+        }
+
+        public override BoundingBox GetBoundingBox()
+        {
+            return Polygons.Select(p => p.GetBoundingBox()).GetBoundingBox();
+        }
     }
 }
