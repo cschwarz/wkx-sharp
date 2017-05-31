@@ -24,7 +24,19 @@
     "emptyCircularString": "CIRCULARSTRING EMPTY",
     "circularString": "CIRCULARSTRING(1 2,3 4,5 6)",
     "emptyCompoundCurve": "COMPOUNDCURVE EMPTY",
-    "compoundCurve": "COMPOUNDCURVE(CIRCULARSTRING(1 2,3 4,5 6),(5 6,7 8))"
+    "compoundCurve": "COMPOUNDCURVE(CIRCULARSTRING(1 2,3 4,5 6),(5 6,7 8))",
+    "emptyCurvePolygon": "CURVEPOLYGON EMPTY",
+    "curvePolygonLineString": "CURVEPOLYGON((1 2,3 4,5 6,1 2))",
+    "curvePolygonCircularString": "CURVEPOLYGON(CIRCULARSTRING(1 2,3 4,5 6,3 4,1 2))",
+    "curvePolygonCompoundCurve": "CURVEPOLYGON(COMPOUNDCURVE(CIRCULARSTRING(1 2,3 4,5 6),(5 6,7 8,1 2)))",
+    "curvePolygonLineStringWithOneInteriorRingLineString": "CURVEPOLYGON((1 2,3 4,5 6,1 2),(11 12,13 14,15 16,11 12))",
+    "curvePolygonLineStringWithOneInteriorRingCircularString": "CURVEPOLYGON((1 2,3 4,5 6,1 2),CIRCULARSTRING(11 12,13 14,15 16,13 14,11 12))",
+    "curvePolygonLineStringWithOneInteriorRingCompoundCurve": "CURVEPOLYGON((1 2,3 4,5 6,1 2),COMPOUNDCURVE(CIRCULARSTRING(11 12,13 14,15 16),(15 16,17 18,11 12)))",
+    "emptyMultiCurve": "MULTICURVE EMPTY",
+    "emptyMultiSurface": "MULTISURFACE EMPTY",
+    "emptyPolyhedralSurface": "POLYHEDRALSURFACE EMPTY",
+    "emptyTIN": "TIN EMPTY",
+    "emptyTriangle": "TRIANGLE EMPTY"
   },
   "xyz": {
     "emptyPoint": "POINT Z EMPTY",
