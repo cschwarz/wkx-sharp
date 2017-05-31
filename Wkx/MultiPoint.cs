@@ -19,6 +19,9 @@ namespace Wkx
         public MultiPoint(IEnumerable<Point> points)
         {
             Points = new List<Point>(points);
+
+            if (Points.Any())
+                Dimension = Points.First().Dimension;
         }
 
         public override bool Equals(object obj)
@@ -39,6 +42,16 @@ namespace Wkx
         public override int GetHashCode()
         {
             return new { Points }.GetHashCode();
+        }
+
+        public override Point GetCenter()
+        {
+            return Points.Select(p => p.GetCenter()).GetCenter();
+        }
+
+        public override BoundingBox GetBoundingBox()
+        {
+            return Points.Select(p => p.GetBoundingBox()).GetBoundingBox();
         }
     }
 }

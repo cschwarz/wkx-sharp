@@ -19,6 +19,9 @@ namespace Wkx
         public MultiPolygon(IEnumerable<Polygon> polygons)
         {
             Polygons = new List<Polygon>(polygons);
+
+            if (Polygons.Any())
+                Dimension = Polygons.First().Dimension;
         }
 
         public override bool Equals(object obj)
@@ -39,6 +42,16 @@ namespace Wkx
         public override int GetHashCode()
         {
             return new { Polygons }.GetHashCode();
+        }
+
+        public override Point GetCenter()
+        {
+            return Polygons.Select(p => p.GetCenter()).GetCenter();
+        }
+
+        public override BoundingBox GetBoundingBox()
+        {
+            return Polygons.Select(p => p.GetBoundingBox()).GetBoundingBox();
         }
     }
 }

@@ -26,6 +26,9 @@ namespace Wkx
         {
             ExteriorRing = new List<Point>(exteriorRing);
             InteriorRings = new List<List<Point>>(interiorRings);
+
+            if (ExteriorRing.Any())
+                Dimension = ExteriorRing.First().Dimension;
         }
 
         public override bool Equals(object obj)
@@ -46,6 +49,16 @@ namespace Wkx
         public override int GetHashCode()
         {
             return new { ExteriorRing, InteriorRings }.GetHashCode();
+        }
+
+        public override Point GetCenter()
+        {
+            return ExteriorRing.Take(ExteriorRing.Count - 1).GetCenter();
+        }
+
+        public override BoundingBox GetBoundingBox()
+        {
+            return ExteriorRing.GetBoundingBox();
         }
     }
 }

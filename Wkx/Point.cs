@@ -22,6 +22,15 @@ namespace Wkx
             Y = y;
             Z = z;
             M = m;
+
+            if (z.HasValue && m.HasValue)
+                Dimension = Dimension.Xyzm;
+            else if (z.HasValue)
+                Dimension = Dimension.Xyz;
+            else if (m.HasValue)
+                Dimension = Dimension.Xym;
+            else
+                Dimension = Dimension.Xy;
         }
 
         public override bool Equals(object obj)
@@ -43,6 +52,16 @@ namespace Wkx
         public override int GetHashCode()
         {
             return new { X, Y, Z, M }.GetHashCode();
+        }
+
+        public override Point GetCenter()
+        {
+            return new Point(X.Value, Y.Value, Z, M);
+        }
+
+        public override BoundingBox GetBoundingBox()
+        {
+            return new BoundingBox(X.Value, Y.Value, X.Value, Y.Value);
         }
     }
 }

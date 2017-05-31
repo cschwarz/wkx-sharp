@@ -19,6 +19,9 @@ namespace Wkx
         public GeometryCollection(IEnumerable<Geometry> geometries)
         {
             Geometries = new List<Geometry>(geometries);
+
+            if (Geometries.Any())
+                Dimension = Geometries.First().Dimension;
         }
 
         public override bool Equals(object obj)
@@ -39,6 +42,16 @@ namespace Wkx
         public override int GetHashCode()
         {
             return new { Geometries }.GetHashCode();
+        }
+
+        public override Point GetCenter()
+        {
+            return Geometries.Select(g => g.GetCenter()).GetCenter();
+        }
+
+        public override BoundingBox GetBoundingBox()
+        {
+            return Geometries.Select(g => g.GetBoundingBox()).GetBoundingBox();
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Threading;
 using Xunit;
 
 namespace Wkx.Tests
@@ -29,6 +31,24 @@ namespace Wkx.Tests
             Assert.Equal("Expected group start", Assert.Throws<Exception>(() => Geometry.Deserialize<WktSerializer>("POINT)")).Message);
             Assert.Equal("Expected group end", Assert.Throws<Exception>(() => Geometry.Deserialize<WktSerializer>("POINT(1 2")).Message);
             Assert.Equal("Expected coordinates", Assert.Throws<Exception>(() => Geometry.Deserialize<WktSerializer>("POINT(1)")).Message);
+        }
+
+        [Fact]
+        public void SerializeWkt_InvariantCulture()
+        {
+            CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            Assert.Equal("POINT(1.2 3.4)", new Point(1.2, 3.4).SerializeString<WktSerializer>());
+            Thread.CurrentThread.CurrentCulture = currentCulture;
+        }
+
+        [Fact]
+        public void SerializeWkt_GermanCulture()
+        {
+            CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("de");
+            Assert.Equal("POINT(1.2 3.4)", new Point(1.2, 3.4).SerializeString<WktSerializer>());
+            Thread.CurrentThread.CurrentCulture = currentCulture;
         }
     }
 }

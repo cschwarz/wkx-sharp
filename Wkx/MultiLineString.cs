@@ -19,6 +19,9 @@ namespace Wkx
         public MultiLineString(IEnumerable<LineString> lineStrings)
         {
             LineStrings = new List<LineString>(lineStrings);
+
+            if (LineStrings.Any())
+                Dimension = LineStrings.First().Dimension;
         }
 
         public override bool Equals(object obj)
@@ -39,6 +42,16 @@ namespace Wkx
         public override int GetHashCode()
         {
             return new { LineStrings }.GetHashCode();
+        }
+
+        public override Point GetCenter()
+        {
+            return LineStrings.Select(l => l.GetCenter()).GetCenter();
+        }
+
+        public override BoundingBox GetBoundingBox()
+        {
+            return LineStrings.Select(l => l.GetBoundingBox()).GetBoundingBox();
         }
     }
 }
