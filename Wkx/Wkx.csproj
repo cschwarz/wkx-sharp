@@ -35,6 +35,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BoundingBox.cs" />
+    <Compile Include="Tin.cs" />
+    <Compile Include="PolyhedralSurface.cs" />
+    <Compile Include="MultiSurface.cs" />
+    <Compile Include="MultiCurve.cs" />
+    <Compile Include="CurvePolygon.cs" />
     <Compile Include="CompoundCurve.cs" />
     <Compile Include="Dimension.cs" />
     <Compile Include="EndianBinaryReader.cs" />
@@ -51,6 +56,7 @@
     <Compile Include="GeometryType.cs" />
     <Compile Include="IGeometrySerializer.cs" />
     <Compile Include="CircularString.cs" />
+    <Compile Include="Triangle.cs" />
     <Compile Include="LineString.cs" />
     <Compile Include="MultiLineString.cs" />
     <Compile Include="MultiPoint.cs" />

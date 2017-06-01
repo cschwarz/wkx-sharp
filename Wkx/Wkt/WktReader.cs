@@ -62,6 +62,12 @@ namespace Wkx
                 case GeometryType.GeometryCollection: return ReadGeometryCollection(dimension);
                 case GeometryType.CircularString: return ReadCircularString(dimension);
                 case GeometryType.CompoundCurve: return ReadCompoundCurve(dimension);
+                case GeometryType.CurvePolygon: return ReadCurvePolygon(dimension);
+                case GeometryType.MultiCurve: return ReadMultiCurve(dimension);
+                case GeometryType.MultiSurface: return ReadMultiSurface(dimension);
+                case GeometryType.PolyhedralSurface: return ReadPolyhedralSurface(dimension);
+                case GeometryType.Tin: return ReadTin(dimension);
+                case GeometryType.Triangle: return ReadTriangle(dimension);
                 default: throw new NotSupportedException(geometryType.ToString());
             }
         }
@@ -81,6 +87,12 @@ namespace Wkx
                 case GeometryType.GeometryCollection: geometry = new GeometryCollection(); break;
                 case GeometryType.CircularString: geometry = new CircularString(); break;
                 case GeometryType.CompoundCurve: geometry = new CompoundCurve(); break;
+                case GeometryType.CurvePolygon: geometry = new CurvePolygon(); break;
+                case GeometryType.MultiCurve: geometry = new MultiCurve(); break;
+                case GeometryType.MultiSurface: geometry = new MultiSurface(); break;
+                case GeometryType.PolyhedralSurface: geometry = new PolyhedralSurface(); break;
+                case GeometryType.Tin: geometry = new Tin(); break;
+                case GeometryType.Triangle: geometry = new Triangle(); break;
                 default: throw new NotSupportedException(geometryType.ToString());
             }
 
@@ -212,7 +224,113 @@ namespace Wkx
                 compoundCurve.Geometries.Add(ReadType(GeometryType.LineString, dimension, GeometryType.LineString, GeometryType.CircularString));
             } while (IsMatch(","));
 
+
+            ExpectGroupEnd();
+
             return compoundCurve;
+        }
+
+        protected CurvePolygon ReadCurvePolygon(Dimension dimension)
+        {
+            ExpectGroupStart();
+            CurvePolygon curvePolygon = new CurvePolygon();
+            curvePolygon.Dimension = dimension;
+
+            do
+            {
+                curvePolygon.Geometries.Add(ReadType(GeometryType.LineString, dimension, GeometryType.LineString, GeometryType.CircularString, GeometryType.CompoundCurve));
+            } while (IsMatch(","));
+
+            ExpectGroupEnd();
+
+            return curvePolygon;
+        }
+
+        protected MultiCurve ReadMultiCurve(Dimension dimension)
+        {
+            ExpectGroupStart();
+            MultiCurve multiCurve = new MultiCurve();
+            multiCurve.Dimension = dimension;
+
+            do
+            {
+                multiCurve.Geometries.Add(ReadType(GeometryType.LineString, dimension, GeometryType.LineString, GeometryType.CircularString, GeometryType.CompoundCurve));
+            } while (IsMatch(","));
+
+            ExpectGroupEnd();
+
+            return multiCurve;
+        }
+
+        protected MultiSurface ReadMultiSurface(Dimension dimension)
+        {
+            ExpectGroupStart();
+            MultiSurface multiSurface = new MultiSurface();
+            multiSurface.Dimension = dimension;
+
+            do
+            {
+                multiSurface.Geometries.Add(ReadType(GeometryType.Polygon, dimension, GeometryType.Polygon, GeometryType.CurvePolygon));
+            } while (IsMatch(","));
+
+            ExpectGroupEnd();
+
+            return multiSurface;
+        }
+
+        protected PolyhedralSurface ReadPolyhedralSurface(Dimension dimension)
+        {
+            PolyhedralSurface polyhedralSurface = new PolyhedralSurface();
+            polyhedralSurface.Dimension = dimension;
+
+            ExpectGroupStart();
+
+            do
+            {
+                polyhedralSurface.Geometries.Add(ReadPolygon(dimension));
+            } while (IsMatch(","));
+
+            ExpectGroupEnd();
+
+            return polyhedralSurface;
+        }
+
+        protected Tin ReadTin(Dimension dimension)
+        {
+            Tin tin = new Tin();
+            tin.Dimension = dimension;
+
+            ExpectGroupStart();
+
+            do
+            {
+                tin.Geometries.Add(ReadTriangle(dimension));
+            } while (IsMatch(","));
+
+            ExpectGroupEnd();
+
+            return tin;
+        }
+
+        protected Triangle ReadTriangle(Dimension dimension)
+        {
+            ExpectGroupStart();
+
+            ExpectGroupStart();
+            Triangle triangle = new Triangle(MatchCoordinates(dimension));
+            triangle.Dimension = dimension;
+            ExpectGroupEnd();
+
+            while (IsMatch(","))
+            {
+                ExpectGroupStart();
+                triangle.InteriorRings.Add(new List<Point>(MatchCoordinates(dimension)));
+                ExpectGroupEnd();
+            }
+
+            ExpectGroupEnd();
+
+            return triangle;
         }
 
         protected GeometryType MatchType()

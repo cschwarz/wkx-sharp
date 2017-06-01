@@ -33,6 +33,12 @@ namespace Wkx
                 case GeometryType.GeometryCollection: WriteGeometryCollection(geometry as GeometryCollection); break;
                 case GeometryType.CircularString: WriteCircularString(geometry as CircularString); break;
                 case GeometryType.CompoundCurve: WriteCompoundCurve(geometry as CompoundCurve); break;
+                case GeometryType.CurvePolygon: WriteCurvePolygon(geometry as CurvePolygon); break;
+                case GeometryType.MultiCurve: WriteMultiCurve(geometry as MultiCurve); break;
+                case GeometryType.MultiSurface: WriteMultiSurface(geometry as MultiSurface); break;
+                case GeometryType.PolyhedralSurface: WritePolyhedralSurface(geometry as PolyhedralSurface); break;
+                case GeometryType.Tin: WriteTin(geometry as Tin); break;
+                case GeometryType.Triangle: WriteTriangle(geometry as Triangle); break;
                 default: throw new NotSupportedException(geometry.GeometryType.ToString());
             }
 
@@ -175,6 +181,81 @@ namespace Wkx
 
             wktBuilder.Remove(wktBuilder.Length - 1, 1);
             wktBuilder.Append(")");
+        }
+
+        private void WriteCurvePolygon(CurvePolygon curvePolygon)
+        {
+            wktBuilder.Append("(");
+
+            foreach (Geometry geometry in curvePolygon.Geometries)
+            {
+                Write(geometry, geometry.GeometryType == GeometryType.LineString);
+                wktBuilder.Append(",");
+            }
+
+            wktBuilder.Remove(wktBuilder.Length - 1, 1);
+            wktBuilder.Append(")");
+        }
+
+        private void WriteMultiCurve(MultiCurve multiCurve)
+        {
+            wktBuilder.Append("(");
+
+            foreach (Geometry geometry in multiCurve.Geometries)
+            {
+                Write(geometry, geometry.GeometryType == GeometryType.LineString);
+                wktBuilder.Append(",");
+            }
+
+            wktBuilder.Remove(wktBuilder.Length - 1, 1);
+            wktBuilder.Append(")");
+        }
+
+        private void WriteMultiSurface(MultiSurface multiSurface)
+        {
+            wktBuilder.Append("(");
+
+            foreach (Geometry geometry in multiSurface.Geometries)
+            {
+                Write(geometry, geometry.GeometryType == GeometryType.Polygon);
+                wktBuilder.Append(",");
+            }
+
+            wktBuilder.Remove(wktBuilder.Length - 1, 1);
+            wktBuilder.Append(")");
+        }
+
+        private void WritePolyhedralSurface(PolyhedralSurface polyhedralSurface)
+        {
+            wktBuilder.Append("(");
+
+            foreach (Geometry geometry in polyhedralSurface.Geometries)
+            {
+                Write(geometry, true);
+                wktBuilder.Append(",");
+            }
+
+            wktBuilder.Remove(wktBuilder.Length - 1, 1);
+            wktBuilder.Append(")");
+        }
+
+        private void WriteTin(Tin tin)
+        {
+            wktBuilder.Append("(");
+
+            foreach (Geometry geometry in tin.Geometries)
+            {
+                Write(geometry, true);
+                wktBuilder.Append(",");
+            }
+
+            wktBuilder.Remove(wktBuilder.Length - 1, 1);
+            wktBuilder.Append(")");
+        }
+
+        private void WriteTriangle(Triangle triangle)
+        {
+            WritePolygon(triangle);
         }
     }
 }

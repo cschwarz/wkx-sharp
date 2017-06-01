@@ -34,6 +34,12 @@ namespace Wkx
                 case GeometryType.GeometryCollection: geometry = ReadGeometryCollection(dimension); break;
                 case GeometryType.CircularString: geometry = ReadCircularString(dimension); break;
                 case GeometryType.CompoundCurve: geometry = ReadCompoundCurve(dimension); break;
+                case GeometryType.CurvePolygon: geometry = ReadCurvePolygon(dimension); break;
+                case GeometryType.MultiCurve: geometry = ReadMultiCurve(dimension); break;
+                case GeometryType.MultiSurface: geometry = ReadMultiSurface(dimension); break;
+                case GeometryType.PolyhedralSurface: geometry = ReadPolyhedralSurface(dimension); break;
+                case GeometryType.Tin: geometry = ReadTin(dimension); break;
+                case GeometryType.Triangle: geometry = ReadTriangle(dimension); break;
                 default: throw new NotSupportedException(geometryType.ToString());
             }
 
@@ -189,6 +195,91 @@ namespace Wkx
                 compoundCurve.Geometries.Add(Read());
 
             return compoundCurve;
+        }
+
+        private CurvePolygon ReadCurvePolygon(Dimension dimension)
+        {
+            CurvePolygon curvePolygon = new CurvePolygon();
+
+            uint geometryCount = wkbReader.ReadUInt32();
+
+            for (int i = 0; i < geometryCount; i++)
+                curvePolygon.Geometries.Add(Read());
+
+            return curvePolygon;
+        }
+
+        private MultiCurve ReadMultiCurve(Dimension dimension)
+        {
+            MultiCurve multiCurve = new MultiCurve();
+
+            uint geometryCount = wkbReader.ReadUInt32();
+
+            for (int i = 0; i < geometryCount; i++)
+                multiCurve.Geometries.Add(Read());
+
+            return multiCurve;
+        }
+
+        private MultiSurface ReadMultiSurface(Dimension dimension)
+        {
+            MultiSurface multiSurface = new MultiSurface();
+
+            uint geometryCount = wkbReader.ReadUInt32();
+
+            for (int i = 0; i < geometryCount; i++)
+                multiSurface.Geometries.Add(Read());
+
+            return multiSurface;
+        }
+
+        private PolyhedralSurface ReadPolyhedralSurface(Dimension dimension)
+        {
+            PolyhedralSurface polyhedralSurface = new PolyhedralSurface();
+
+            uint geometryCount = wkbReader.ReadUInt32();
+
+            for (int i = 0; i < geometryCount; i++)
+                polyhedralSurface.Geometries.Add(Read());
+
+            return polyhedralSurface;
+        }
+
+        private Tin ReadTin(Dimension dimension)
+        {
+            Tin tin = new Tin();
+
+            uint geometryCount = wkbReader.ReadUInt32();
+
+            for (int i = 0; i < geometryCount; i++)
+                tin.Geometries.Add(Read());
+
+            return tin;
+        }
+
+        private Triangle ReadTriangle(Dimension dimension)
+        {
+            Triangle triangle = new Triangle();
+
+            uint ringCount = wkbReader.ReadUInt32();
+
+            if (ringCount > 0)
+            {
+                uint exteriorRingCount = wkbReader.ReadUInt32();
+                for (int i = 0; i < exteriorRingCount; i++)
+                    triangle.ExteriorRing.Add(ReadPoint(dimension));
+
+                for (int i = 1; i < ringCount; i++)
+                {
+                    triangle.InteriorRings.Add(new List<Point>());
+
+                    uint interiorRingCount = wkbReader.ReadUInt32();
+                    for (int j = 0; j < interiorRingCount; j++)
+                        triangle.InteriorRings[i - 1].Add(ReadPoint(dimension));
+                }
+            }
+
+            return triangle;
         }
     }
 }

@@ -52,6 +52,12 @@ namespace Wkx
                 case GeometryType.GeometryCollection: WriteGeometryCollection(geometry as GeometryCollection); break;
                 case GeometryType.CircularString: WriteCircularString(geometry as CircularString); break;
                 case GeometryType.CompoundCurve: WriteCompoundCurve(geometry as CompoundCurve); break;
+                case GeometryType.CurvePolygon: WriteCurvePolygon(geometry as CurvePolygon); break;
+                case GeometryType.MultiCurve: WriteMultiCurve(geometry as MultiCurve); break;
+                case GeometryType.MultiSurface: WriteMultiSurface(geometry as MultiSurface); break;
+                case GeometryType.PolyhedralSurface: WritePolyhedralSurface(geometry as PolyhedralSurface); break;
+                case GeometryType.Tin: WriteTin(geometry as Tin); break;
+                case GeometryType.Triangle: WriteTriangle(geometry as Triangle); break;
                 default: throw new NotSupportedException(geometry.GeometryType.ToString());
             }
         }
@@ -144,6 +150,68 @@ namespace Wkx
 
             foreach (Geometry geometry in compoundCurve.Geometries)
                 WriteInternal(geometry);
+        }
+
+        private void WriteCurvePolygon(CurvePolygon curvePolygon)
+        {
+            wkbWriter.Write(curvePolygon.Geometries.Count);
+
+            foreach (Geometry geometry in curvePolygon.Geometries)
+                WriteInternal(geometry);
+        }
+
+        private void WriteMultiCurve(MultiCurve multiCurve)
+        {
+            wkbWriter.Write(multiCurve.Geometries.Count);
+
+            foreach (Geometry geometry in multiCurve.Geometries)
+                WriteInternal(geometry);
+        }
+
+        private void WriteMultiSurface(MultiSurface multiSurface)
+        {
+            wkbWriter.Write(multiSurface.Geometries.Count);
+
+            foreach (Geometry geometry in multiSurface.Geometries)
+                WriteInternal(geometry);
+        }
+
+        private void WritePolyhedralSurface(PolyhedralSurface polyhedralSurface)
+        {
+            wkbWriter.Write(polyhedralSurface.Geometries.Count);
+
+            foreach (Geometry geometry in polyhedralSurface.Geometries)
+                WriteInternal(geometry);
+        }
+
+        private void WriteTin(Tin tin)
+        {
+            wkbWriter.Write(tin.Geometries.Count);
+
+            foreach (Geometry geometry in tin.Geometries)
+                WriteInternal(geometry);
+        }
+        
+        private void WriteTriangle(Triangle triangle)
+        {
+            if (triangle.IsEmpty)
+            {
+                wkbWriter.Write(0);
+                return;
+            }
+
+            wkbWriter.Write(1 + triangle.InteriorRings.Count);
+
+            wkbWriter.Write(triangle.ExteriorRing.Count);
+            foreach (Point point in triangle.ExteriorRing)
+                WritePoint(point, triangle.Dimension);
+
+            foreach (List<Point> interiorRing in triangle.InteriorRings)
+            {
+                wkbWriter.Write(interiorRing.Count);
+                foreach (Point point in interiorRing)
+                    WritePoint(point, triangle.Dimension);
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Wkx
 
         protected override GeometryType ReadGeometryType(uint type)
         {
-            return (GeometryType)(type & 0XF);
+            return (GeometryType)(type & 0XFF);
         }
 
         protected override Dimension ReadDimension(uint type)

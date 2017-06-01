@@ -17,7 +17,7 @@
         Curve = 13,
         Surface = 14,
         PolyhedralSurface = 15,
-        TIN = 16,
+        Tin = 16,
         Triangle = 17
     }
 }
