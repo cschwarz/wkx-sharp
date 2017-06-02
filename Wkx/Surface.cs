@@ -4,21 +4,21 @@ using System.Linq;
 
 namespace Wkx
 {
-    public abstract class GeometryCollection<T> : Geometry, IEquatable<GeometryCollection<T>> where T : Geometry
+    public abstract class Surface : Geometry, IEquatable<Surface>
     {
-        public override GeometryType GeometryType { get { return GeometryType.GeometryCollection; } }
+        public override GeometryType GeometryType { get { return GeometryType.Surface; } }
         public override bool IsEmpty { get { return !Geometries.Any(); } }
 
-        public List<T> Geometries { get; private set; }
+        public List<Geometry> Geometries { get; private set; }
 
-        public GeometryCollection()
-            : this(new List<T>())
+        public Surface()
+            : this(new List<Geometry>())
         {
         }
 
-        public GeometryCollection(IEnumerable<T> geometries)
+        public Surface(IEnumerable<Geometry> geometries)
         {
-            Geometries = new List<T>(geometries);
+            Geometries = new List<Geometry>(geometries);
 
             if (Geometries.Any())
                 Dimension = Geometries.First().Dimension;
@@ -28,13 +28,13 @@ namespace Wkx
         {
             if (obj == null)
                 return false;
-            if (!(obj is GeometryCollection<T>))
+            if (!(obj is Surface))
                 return false;
 
-            return Equals((GeometryCollection<T>)obj);
+            return Equals((Surface)obj);
         }
 
-        public bool Equals(GeometryCollection<T> other)
+        public bool Equals(Surface other)
         {
             return Geometries.SequenceEqual(other.Geometries);
         }
@@ -53,19 +53,5 @@ namespace Wkx
         {
             return Geometries.Select(g => g.GetBoundingBox()).GetBoundingBox();
         }
-    }
-
-    public class GeometryCollection : GeometryCollection<Geometry>
-    {
-        public GeometryCollection()
-               :base()
-        {
-        }
-
-        public GeometryCollection(IEnumerable<Geometry> geometries)
-            : base(geometries)
-        {
-        }
-    }
+    }    
 }
-

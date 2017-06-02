@@ -99,13 +99,13 @@ namespace Wkx
         {
             wktBuilder.Append("((");
 
-            WriteWktCoordinates(polygon.ExteriorRing);
+            WriteWktCoordinates(polygon.ExteriorRing.Points);
             wktBuilder.Append("),");
 
-            foreach (List<Point> interiorRing in polygon.InteriorRings)
+            foreach (LinearRing interiorRing in polygon.InteriorRings)
             {
                 wktBuilder.Append("(");
-                WriteWktCoordinates(interiorRing);
+                WriteWktCoordinates(interiorRing.Points);
                 wktBuilder.Append("),");
             }
 
@@ -116,7 +116,7 @@ namespace Wkx
         private void WriteMultiPoint(MultiPoint multiPoint)
         {
             wktBuilder.Append("(");
-            WriteWktCoordinates(multiPoint.Points);
+            WriteWktCoordinates(multiPoint.Geometries);
             wktBuilder.Append(")");
         }
 
@@ -124,7 +124,7 @@ namespace Wkx
         {
             wktBuilder.Append("(");
 
-            foreach (LineString lineString in multiLineString.LineStrings)
+            foreach (LineString lineString in multiLineString.Geometries)
             {
                 WriteLineString(lineString);
                 wktBuilder.Append(",");
@@ -138,7 +138,7 @@ namespace Wkx
         {
             wktBuilder.Append("(");
 
-            foreach (Polygon polygon in multiPolygon.Polygons)
+            foreach (Polygon polygon in multiPolygon.Geometries)
             {
                 WritePolygon(polygon);
                 wktBuilder.Append(",");

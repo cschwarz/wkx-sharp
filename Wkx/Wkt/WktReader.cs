@@ -133,7 +133,7 @@ namespace Wkx
             while (IsMatch(","))
             {
                 ExpectGroupStart();
-                polygon.InteriorRings.Add(new List<Point>(MatchCoordinates(dimension)));
+                polygon.InteriorRings.Add(new LinearRing(new List<Point>(MatchCoordinates(dimension))));
                 ExpectGroupEnd();
             }
 
@@ -161,7 +161,7 @@ namespace Wkx
 
             do
             {
-                multiLineString.LineStrings.Add(ReadLineString(dimension));
+                multiLineString.Geometries.Add(ReadLineString(dimension));
             } while (IsMatch(","));
 
             ExpectGroupEnd();
@@ -178,7 +178,7 @@ namespace Wkx
 
             do
             {
-                multiPolygon.Polygons.Add(ReadPolygon(dimension));
+                multiPolygon.Geometries.Add(ReadPolygon(dimension));
             } while (IsMatch(","));
 
             ExpectGroupEnd();
@@ -254,7 +254,7 @@ namespace Wkx
 
             do
             {
-                multiCurve.Geometries.Add(ReadType(GeometryType.LineString, dimension, GeometryType.LineString, GeometryType.CircularString, GeometryType.CompoundCurve));
+                multiCurve.Geometries.Add((Curve)ReadType(GeometryType.LineString, dimension, GeometryType.LineString, GeometryType.CircularString, GeometryType.CompoundCurve));
             } while (IsMatch(","));
 
             ExpectGroupEnd();
@@ -270,7 +270,7 @@ namespace Wkx
 
             do
             {
-                multiSurface.Geometries.Add(ReadType(GeometryType.Polygon, dimension, GeometryType.Polygon, GeometryType.CurvePolygon));
+                multiSurface.Geometries.Add((Surface)ReadType(GeometryType.Polygon, dimension, GeometryType.Polygon, GeometryType.CurvePolygon));
             } while (IsMatch(","));
 
             ExpectGroupEnd();
@@ -324,7 +324,7 @@ namespace Wkx
             while (IsMatch(","))
             {
                 ExpectGroupStart();
-                triangle.InteriorRings.Add(new List<Point>(MatchCoordinates(dimension)));
+                triangle.InteriorRings.Add(new LinearRing(new List<Point>(MatchCoordinates(dimension))));
                 ExpectGroupEnd();
             }
 

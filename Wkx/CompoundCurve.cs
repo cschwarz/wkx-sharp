@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Wkx
 {
-    public class CompoundCurve : Geometry, IEquatable<CompoundCurve>
+    public class CompoundCurve : Curve, IEquatable<CompoundCurve>
     {
         public override GeometryType GeometryType { get { return GeometryType.CompoundCurve; } }
         public override bool IsEmpty { get { return !Geometries.Any(); } }

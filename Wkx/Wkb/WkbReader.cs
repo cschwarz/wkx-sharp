@@ -110,15 +110,15 @@ namespace Wkx
             {
                 uint exteriorRingCount = wkbReader.ReadUInt32();
                 for (int i = 0; i < exteriorRingCount; i++)
-                    polygon.ExteriorRing.Add(ReadPoint(dimension));
+                    polygon.ExteriorRing.Points.Add(ReadPoint(dimension));
 
                 for (int i = 1; i < ringCount; i++)
                 {
-                    polygon.InteriorRings.Add(new List<Point>());
+                    polygon.InteriorRings.Add(new LinearRing());
 
                     uint interiorRingCount = wkbReader.ReadUInt32();
                     for (int j = 0; j < interiorRingCount; j++)
-                        polygon.InteriorRings[i - 1].Add(ReadPoint(dimension));
+                        polygon.InteriorRings[i - 1].Points.Add(ReadPoint(dimension));
                 }
             }
 
@@ -132,7 +132,7 @@ namespace Wkx
             uint pointCount = wkbReader.ReadUInt32();
 
             for (int i = 0; i < pointCount; i++)
-                multiPoint.Points.Add(Read<Point>());
+                multiPoint.Geometries.Add(Read<Point>());
 
             return multiPoint;
         }
@@ -144,7 +144,7 @@ namespace Wkx
             uint lineStringCount = wkbReader.ReadUInt32();
 
             for (int i = 0; i < lineStringCount; i++)
-                multiLineString.LineStrings.Add(Read<LineString>());
+                multiLineString.Geometries.Add(Read<LineString>());
 
             return multiLineString;
         }
@@ -156,7 +156,7 @@ namespace Wkx
             uint polygonCount = wkbReader.ReadUInt32();
 
             for (int i = 0; i < polygonCount; i++)
-                multiPolygon.Polygons.Add(Read<Polygon>());
+                multiPolygon.Geometries.Add(Read<Polygon>());
 
             return multiPolygon;
         }
@@ -216,7 +216,7 @@ namespace Wkx
             uint geometryCount = wkbReader.ReadUInt32();
 
             for (int i = 0; i < geometryCount; i++)
-                multiCurve.Geometries.Add(Read());
+                multiCurve.Geometries.Add((Curve)Read());
 
             return multiCurve;
         }
@@ -228,7 +228,7 @@ namespace Wkx
             uint geometryCount = wkbReader.ReadUInt32();
 
             for (int i = 0; i < geometryCount; i++)
-                multiSurface.Geometries.Add(Read());
+                multiSurface.Geometries.Add((Surface)Read());
 
             return multiSurface;
         }
@@ -267,15 +267,15 @@ namespace Wkx
             {
                 uint exteriorRingCount = wkbReader.ReadUInt32();
                 for (int i = 0; i < exteriorRingCount; i++)
-                    triangle.ExteriorRing.Add(ReadPoint(dimension));
+                    triangle.ExteriorRing.Points.Add(ReadPoint(dimension));
 
                 for (int i = 1; i < ringCount; i++)
                 {
-                    triangle.InteriorRings.Add(new List<Point>());
+                    triangle.InteriorRings.Add(new LinearRing());
 
                     uint interiorRingCount = wkbReader.ReadUInt32();
                     for (int j = 0; j < interiorRingCount; j++)
-                        triangle.InteriorRings[i - 1].Add(ReadPoint(dimension));
+                        triangle.InteriorRings[i - 1].Points.Add(ReadPoint(dimension));
                 }
             }
 

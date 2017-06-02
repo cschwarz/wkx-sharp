@@ -92,39 +92,39 @@ namespace Wkx
 
             wkbWriter.Write(1 + polygon.InteriorRings.Count);
 
-            wkbWriter.Write(polygon.ExteriorRing.Count);
-            foreach (Point point in polygon.ExteriorRing)
+            wkbWriter.Write(polygon.ExteriorRing.Points.Count);
+            foreach (Point point in polygon.ExteriorRing.Points)
                 WritePoint(point, polygon.Dimension);
 
-            foreach (List<Point> interiorRing in polygon.InteriorRings)
+            foreach (LinearRing interiorRing in polygon.InteriorRings)
             {
-                wkbWriter.Write(interiorRing.Count);
-                foreach (Point point in interiorRing)
+                wkbWriter.Write(interiorRing.Points.Count);
+                foreach (Point point in interiorRing.Points)
                     WritePoint(point, polygon.Dimension);
             }
         }
 
         private void WriteMultiPoint(MultiPoint multiPoint)
         {
-            wkbWriter.Write(multiPoint.Points.Count);
+            wkbWriter.Write(multiPoint.Geometries.Count);
 
-            foreach (Point point in multiPoint.Points)
+            foreach (Point point in multiPoint.Geometries)
                 WriteInternal(point, multiPoint);
         }
 
         private void WriteMultiLineString(MultiLineString multiLineString)
         {
-            wkbWriter.Write(multiLineString.LineStrings.Count);
+            wkbWriter.Write(multiLineString.Geometries.Count);
 
-            foreach (LineString lineString in multiLineString.LineStrings)
+            foreach (LineString lineString in multiLineString.Geometries)
                 WriteInternal(lineString, multiLineString);
         }
 
         private void WriteMultiPolygon(MultiPolygon multiPolygon)
         {
-            wkbWriter.Write(multiPolygon.Polygons.Count);
+            wkbWriter.Write(multiPolygon.Geometries.Count);
 
-            foreach (Polygon polygon in multiPolygon.Polygons)
+            foreach (Polygon polygon in multiPolygon.Geometries)
                 WriteInternal(polygon, multiPolygon);
         }
 
@@ -202,14 +202,14 @@ namespace Wkx
 
             wkbWriter.Write(1 + triangle.InteriorRings.Count);
 
-            wkbWriter.Write(triangle.ExteriorRing.Count);
-            foreach (Point point in triangle.ExteriorRing)
+            wkbWriter.Write(triangle.ExteriorRing.Points.Count);
+            foreach (Point point in triangle.ExteriorRing.Points)
                 WritePoint(point, triangle.Dimension);
 
-            foreach (List<Point> interiorRing in triangle.InteriorRings)
+            foreach (LinearRing interiorRing in triangle.InteriorRings)
             {
-                wkbWriter.Write(interiorRing.Count);
-                foreach (Point point in interiorRing)
+                wkbWriter.Write(interiorRing.Points.Count);
+                foreach (Point point in interiorRing.Points)
                     WritePoint(point, triangle.Dimension);
             }
         }

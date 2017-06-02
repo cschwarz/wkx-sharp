@@ -18,14 +18,19 @@ namespace Wkx
         {
         }
 
-        public Triangle(IEnumerable<Point> exteriorRing, IEnumerable<List<Point>> interiorRings)
+        public Triangle(LinearRing exteriorRing)
+            : base(exteriorRing)
+        {
+        }
+
+        public Triangle(LinearRing exteriorRing, IEnumerable<LinearRing> interiorRings)
             : base(exteriorRing, interiorRings)
         {
         }
 
         public bool Equals(Triangle other)
         {
-            return ExteriorRing.SequenceEqual(other.ExteriorRing) && InteriorRings.SequenceEqual(other.InteriorRings);
+            return ExteriorRing.Equals(other.ExteriorRing) && InteriorRings.SequenceEqual(other.InteriorRings);
         }
     }
 }

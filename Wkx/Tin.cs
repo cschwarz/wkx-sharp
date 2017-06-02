@@ -12,7 +12,7 @@ namespace Wkx
         {
         }
 
-        public Tin(IEnumerable<Geometry> geometries)
+        public Tin(IEnumerable<Polygon> geometries)
             : base(geometries)
         {
         }

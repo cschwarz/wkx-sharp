@@ -35,6 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BoundingBox.cs" />
+    <Compile Include="Curve.cs" />
+    <Compile Include="LinearRing.cs" />
+    <Compile Include="Surface.cs" />
     <Compile Include="Tin.cs" />
     <Compile Include="PolyhedralSurface.cs" />
     <Compile Include="MultiSurface.cs" />

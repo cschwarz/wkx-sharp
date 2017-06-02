@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace Wkx
 {
-    public class Polygon : Geometry, IEquatable<Polygon>
+    public class Polygon : Surface, IEquatable<Polygon>
     {
         public override GeometryType GeometryType { get { return GeometryType.Polygon; } }
-        public override bool IsEmpty { get { return !ExteriorRing.Any(); } }
-
-        public List<Point> ExteriorRing { get; private set; }
-        public List<List<Point>> InteriorRings { get; private set; }
+        public override bool IsEmpty { get { return ExteriorRing.IsEmpty; } }
+        
+        public LinearRing ExteriorRing { get; private set; }
+        public List<LinearRing> InteriorRings { get; private set; }
 
         public Polygon()
             : this(new List<Point>())
@@ -18,17 +18,22 @@ namespace Wkx
         }
 
         public Polygon(IEnumerable<Point> exteriorRing)
-            : this(exteriorRing, new List<List<Point>>())
+            : this(new LinearRing(exteriorRing))
         {
         }
 
-        public Polygon(IEnumerable<Point> exteriorRing, IEnumerable<List<Point>> interiorRings)
+        public Polygon(LinearRing exteriorRing)
+            : this(exteriorRing, new List<LinearRing>())
         {
-            ExteriorRing = new List<Point>(exteriorRing);
-            InteriorRings = new List<List<Point>>(interiorRings);
+        }
+        
+        public Polygon(LinearRing exteriorRing, IEnumerable<LinearRing> interiorRings)
+        {
+            ExteriorRing = exteriorRing;
+            InteriorRings = new List<LinearRing>(interiorRings);
 
-            if (ExteriorRing.Any())
-                Dimension = ExteriorRing.First().Dimension;
+            if (ExteriorRing.Points.Any())
+                Dimension = ExteriorRing.Points.First().Dimension;
         }
 
         public override bool Equals(object obj)
@@ -43,7 +48,7 @@ namespace Wkx
 
         public bool Equals(Polygon other)
         {
-            return ExteriorRing.SequenceEqual(other.ExteriorRing) && InteriorRings.SequenceEqual(other.InteriorRings);
+            return ExteriorRing.Equals(other.ExteriorRing) && InteriorRings.SequenceEqual(other.InteriorRings);
         }
 
         public override int GetHashCode()
@@ -53,7 +58,7 @@ namespace Wkx
 
         public override Point GetCenter()
         {
-            return ExteriorRing.Take(ExteriorRing.Count - 1).GetCenter();
+            return ExteriorRing.GetCenter();
         }
 
         public override BoundingBox GetBoundingBox()
