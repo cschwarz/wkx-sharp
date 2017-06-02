@@ -44,33 +44,40 @@ namespace Wkx.TestGenerator
 
                         foreach (var testInput in testDimension.Value.ToObject<JObject>())
                         {
-                            command.CommandText = GenerateTestSql(geometryFormats);
+                            JObject testOutput = new JObject();
+                            JObject testOutputResult = new JObject();
 
-                            command.Parameters.Clear();
-                            command.Parameters.Add(new NpgsqlParameter("input", testInput.Value.Value<string>()));
+                            dimension[testInput.Key] = testOutput;
 
-                            using (NpgsqlDataReader reader = command.ExecuteReader())
+                            foreach (GeometryFormat geometryFormat in geometryFormats)
                             {
-                                reader.Read();
+                                command.CommandText = GenerateTestSql(geometryFormat);
 
-                                JObject testOutput = new JObject();
-                                JObject testOutputResult = new JObject();
+                                command.Parameters.Clear();
+                                command.Parameters.Add(new NpgsqlParameter("input", testInput.Value.Value<string>()));
 
-                                dimension[testInput.Key] = testOutput;
-
-                                foreach (GeometryFormat geometryFormat in geometryFormats)
+                                try
                                 {
-                                    testOutput[geometryFormat.Name] = reader.GetString(reader.GetOrdinal(geometryFormat.Name));
+                                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                                    {
+                                        reader.Read();
+                                        
+                                        testOutput[geometryFormat.Name] = reader.GetString(reader.GetOrdinal(geometryFormat.Name));
 
-                                    string result = reader.GetString(reader.GetOrdinal(geometryFormat.Name + "result"));
+                                        string result = reader.GetString(reader.GetOrdinal(geometryFormat.Name + "result"));
 
-                                    if (testInput.Value.Value<string>() != result)
-                                        testOutputResult[geometryFormat.Name] = result;
+                                        if (testInput.Value.Value<string>() != result)
+                                            testOutputResult[geometryFormat.Name] = result;
+                                    }
                                 }
-
-                                if (testOutputResult.Count > 0)
-                                    testOutput["results"] = testOutputResult;
+                                catch (PostgresException)
+                                {
+                                    testOutput[geometryFormat.Name] = null;
+                                }
                             }
+
+                            if (testOutputResult.Count > 0)
+                                testOutput["results"] = testOutputResult;
                         }
                     }
                 }
@@ -79,9 +86,9 @@ namespace Wkx.TestGenerator
             File.WriteAllText("../../../Wkx.Tests/testdata.json", JsonConvert.SerializeObject(testOutputData, Formatting.Indented));
         }
 
-        private static string GenerateTestSql(IEnumerable<GeometryFormat> geometryFormats)
+        private static string GenerateTestSql(GeometryFormat geometryFormat)
         {
-            return "SELECT " + string.Join(", \r\n", geometryFormats.Select(t => t.GenerateSql()));
+            return "SELECT " + geometryFormat.GenerateSql();
         }
     }
 }
