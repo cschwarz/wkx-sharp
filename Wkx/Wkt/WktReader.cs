@@ -238,7 +238,7 @@ namespace Wkx
 
             do
             {
-                curvePolygon.Geometries.Add(ReadType(GeometryType.LineString, dimension, GeometryType.LineString, GeometryType.CircularString, GeometryType.CompoundCurve));
+                curvePolygon.Geometries.Add((Curve)ReadType(GeometryType.LineString, dimension, GeometryType.LineString, GeometryType.CircularString, GeometryType.CompoundCurve));
             } while (IsMatch(","));
 
             ExpectGroupEnd();

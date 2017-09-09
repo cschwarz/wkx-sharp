@@ -204,7 +204,7 @@ namespace Wkx
             uint geometryCount = wkbReader.ReadUInt32();
 
             for (int i = 0; i < geometryCount; i++)
-                curvePolygon.Geometries.Add(Read());
+                curvePolygon.Geometries.Add(Read<Curve>());
 
             return curvePolygon;
         }
@@ -216,7 +216,7 @@ namespace Wkx
             uint geometryCount = wkbReader.ReadUInt32();
 
             for (int i = 0; i < geometryCount; i++)
-                multiCurve.Geometries.Add((Curve)Read());
+                multiCurve.Geometries.Add(Read<Curve>());
 
             return multiCurve;
         }
@@ -228,7 +228,7 @@ namespace Wkx
             uint geometryCount = wkbReader.ReadUInt32();
 
             for (int i = 0; i < geometryCount; i++)
-                multiSurface.Geometries.Add((Surface)Read());
+                multiSurface.Geometries.Add(Read<Surface>());
 
             return multiSurface;
         }
@@ -240,7 +240,7 @@ namespace Wkx
             uint geometryCount = wkbReader.ReadUInt32();
 
             for (int i = 0; i < geometryCount; i++)
-                polyhedralSurface.Geometries.Add(Read());
+                polyhedralSurface.Geometries.Add(Read<Polygon>());
 
             return polyhedralSurface;
         }
@@ -252,7 +252,7 @@ namespace Wkx
             uint geometryCount = wkbReader.ReadUInt32();
 
             for (int i = 0; i < geometryCount; i++)
-                tin.Geometries.Add(Read());
+                tin.Geometries.Add(Read<Polygon>());
 
             return tin;
         }
