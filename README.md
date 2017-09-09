@@ -10,3 +10,11 @@ A WKT/WKB/EWKT/EWKB parser and serializer with support for
 - MultiLineString
 - MultiPolygon
 - GeometryCollection
+- CircularString
+- CompoundCurve
+- CurvePolygon
+- MultiCurve
+- MultiSurface
+- PolyhedralSurface
+- TIN
+- Triangle
