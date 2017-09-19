@@ -233,13 +233,13 @@ namespace Wkx
         protected CurvePolygon ReadCurvePolygon(Dimension dimension)
         {
             ExpectGroupStart();
-            CurvePolygon curvePolygon = new CurvePolygon();
+            CurvePolygon curvePolygon = new CurvePolygon((Curve)ReadType(GeometryType.LineString, dimension, GeometryType.LineString, GeometryType.CircularString, GeometryType.CompoundCurve));
             curvePolygon.Dimension = dimension;
 
-            do
+            while (IsMatch(","))
             {
-                curvePolygon.Geometries.Add((Curve)ReadType(GeometryType.LineString, dimension, GeometryType.LineString, GeometryType.CircularString, GeometryType.CompoundCurve));
-            } while (IsMatch(","));
+                curvePolygon.InteriorRings.Add((Curve)ReadType(GeometryType.LineString, dimension, GeometryType.LineString, GeometryType.CircularString, GeometryType.CompoundCurve));
+            }
 
             ExpectGroupEnd();
 

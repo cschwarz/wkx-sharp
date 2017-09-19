@@ -201,10 +201,15 @@ namespace Wkx
         {
             CurvePolygon curvePolygon = new CurvePolygon();
 
-            uint geometryCount = wkbReader.ReadUInt32();
+            uint ringCount = wkbReader.ReadUInt32();
 
-            for (int i = 0; i < geometryCount; i++)
-                curvePolygon.Geometries.Add(Read<Curve>());
+            if (ringCount > 0)
+            {
+                curvePolygon = new CurvePolygon(Read<Curve>());
+
+                for (int i = 1; i < ringCount; i++)
+                    curvePolygon.InteriorRings.Add(Read<Curve>());
+            }
 
             return curvePolygon;
         }

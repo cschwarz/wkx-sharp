@@ -154,10 +154,18 @@ namespace Wkx
 
         private void WriteCurvePolygon(CurvePolygon curvePolygon)
         {
-            wkbWriter.Write(curvePolygon.Geometries.Count);
+            if (curvePolygon.IsEmpty)
+            {
+                wkbWriter.Write(0);
+                return;
+            }
 
-            foreach (Geometry geometry in curvePolygon.Geometries)
-                WriteInternal(geometry);
+            wkbWriter.Write(1 + curvePolygon.InteriorRings.Count);
+
+            WriteInternal(curvePolygon.ExteriorRing);
+            
+            foreach (Curve interiorRing in curvePolygon.InteriorRings)
+                WriteInternal(interiorRing);
         }
 
         private void WriteMultiCurve(MultiCurve multiCurve)

@@ -186,10 +186,12 @@ namespace Wkx
         private void WriteCurvePolygon(CurvePolygon curvePolygon)
         {
             wktBuilder.Append("(");
+            Write(curvePolygon.ExteriorRing, curvePolygon.ExteriorRing.GeometryType == GeometryType.LineString);
+            wktBuilder.Append(",");
 
-            foreach (Geometry geometry in curvePolygon.Geometries)
+            foreach (Curve interiorRing in curvePolygon.InteriorRings)
             {
-                Write(geometry, geometry.GeometryType == GeometryType.LineString);
+                Write(interiorRing, interiorRing.GeometryType == GeometryType.LineString);
                 wktBuilder.Append(",");
             }
 
