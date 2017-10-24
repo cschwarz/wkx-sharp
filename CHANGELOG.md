@@ -2,6 +2,7 @@
 
 ### Features
 
+* .NET Standard 1.1 support
 * Geometry Types
   * CircularString
   * CompoundCurve
