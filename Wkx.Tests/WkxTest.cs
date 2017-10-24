@@ -26,84 +26,84 @@ namespace Wkx.Tests
         }
 
         [Theory]
-        [MemberData("TestData")]
+        [MemberData(nameof(TestData))]
         public void ParseWkt(TestCase testCase)
         {
             ParseTest<WktSerializer>(testCase, t => t.Wkt, false);
         }
 
         [Theory]
-        [MemberData("TestData")]
+        [MemberData(nameof(TestData))]
         public void ParseEwkt(TestCase testCase)
         {
             ParseTest<EwktSerializer>(testCase, t => t.Ewkt, false);
         }
 
         [Theory]
-        [MemberData("TestData")]
+        [MemberData(nameof(TestData))]
         public void ParseWkb(TestCase testCase)
         {
             ParseTest<WkbSerializer>(testCase, t => t.Wkb, true);
         }
 
         [Theory]
-        [MemberData("TestData")]
+        [MemberData(nameof(TestData))]
         public void ParseWkbXdr(TestCase testCase)
         {
             ParseTest<WkbSerializer>(testCase, t => t.WkbXdr, true);
         }
 
         [Theory]
-        [MemberData("TestData")]
+        [MemberData(nameof(TestData))]
         public void ParseEwkb(TestCase testCase)
         {
             ParseTest<EwkbSerializer>(testCase, t => t.Ewkb, true);
         }
 
         [Theory]
-        [MemberData("TestData")]
+        [MemberData(nameof(TestData))]
         public void ParseEwkbXdr(TestCase testCase)
         {
             ParseTest<EwkbSerializer>(testCase, t => t.EwkbXdr, true);
         }
 
         [Theory]
-        [MemberData("TestData")]
+        [MemberData(nameof(TestData))]
         public void ParseEwkbNoSrid(TestCase testCase)
         {
             ParseTest<EwkbSerializer>(testCase, t => t.EwkbNoSrid, true);
         }
 
         [Theory]
-        [MemberData("TestData")]
+        [MemberData(nameof(TestData))]
         public void ParseEwkbXdrNoSrid(TestCase testCase)
         {
             ParseTest<EwkbSerializer>(testCase, t => t.EwkbXdrNoSrid, true);
         }
 
         [Theory]
-        [MemberData("TestData")]
+        [MemberData(nameof(TestData))]
         public void ToWkt(TestCase testCase)
         {
             SerializeTest(testCase, g => g.SerializeString<WktSerializer>(), t => t.Wkt);
         }
 
         [Theory]
-        [MemberData("TestData")]
+        [MemberData(nameof(TestData))]
         public void ToEwkt(TestCase testCase)
         {
             SerializeTest(testCase, g => g.SerializeString<EwktSerializer>(), t => t.Ewkt);
         }
 
         [Theory]
-        [MemberData("TestData")]
+        [MemberData(nameof(TestData))]
         public void ToWkb(TestCase testCase)
         {
             SerializeTest(testCase, g => g.SerializeByteArray<WkbSerializer>(), t => t.Wkb.ToByteArray());
         }
 
         [Theory]
-        [MemberData("TestData")]
+        [MemberData(nameof(TestData))]
         public void ToEwkb(TestCase testCase)
         {
             SerializeTest(testCase, g => g.SerializeByteArray<EwkbSerializer>(), t => t.Ewkb.ToByteArray());

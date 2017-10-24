@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using Npgsql;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Wkx.TestGenerator
 {
