@@ -1,3 +1,4 @@
+image: Visual Studio 2017
 configuration: Release
 platform: Any CPU
 assembly_info:
