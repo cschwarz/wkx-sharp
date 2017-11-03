@@ -9,16 +9,16 @@ namespace Wkx
         public override GeometryType GeometryType { get { return GeometryType.CompoundCurve; } }
         public override bool IsEmpty { get { return !Geometries.Any(); } }
 
-        public List<Geometry> Geometries { get; private set; }
+        public List<Curve> Geometries { get; private set; }
 
         public CompoundCurve()
         {
-            Geometries = new List<Geometry>();
+            Geometries = new List<Curve>();
         }
 
-        public CompoundCurve(IEnumerable<Geometry> geometries)
+        public CompoundCurve(IEnumerable<Curve> geometries)
         {
-            Geometries = new List<Geometry>(geometries);
+            Geometries = new List<Curve>(geometries);
         }
 
         public override bool Equals(object obj)

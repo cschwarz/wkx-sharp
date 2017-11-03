@@ -31,9 +31,6 @@ namespace Wkx
         {
             ExteriorRing = exteriorRing;
             InteriorRings = new List<Curve>(interiorRings);
-
-            if (ExteriorRing.Points.Any())
-                Dimension = ExteriorRing.Points.First().Dimension;
         }
 
         public override bool Equals(object obj)

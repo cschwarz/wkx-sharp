@@ -221,7 +221,7 @@ namespace Wkx
 
             do
             {
-                compoundCurve.Geometries.Add(ReadType(GeometryType.LineString, dimension, GeometryType.LineString, GeometryType.CircularString));
+                compoundCurve.Geometries.Add((Curve)ReadType(GeometryType.LineString, dimension, GeometryType.LineString, GeometryType.CircularString));
             } while (IsMatch(","));
 
 

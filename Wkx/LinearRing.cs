@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Wkx
 {
-    public class LinearRing : Curve, IEquatable<LinearRing>
+    public class LinearRing : LineString, IEquatable<LinearRing>
     {
         public LinearRing()
             : base()

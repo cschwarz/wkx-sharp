@@ -191,7 +191,7 @@ namespace Wkx
             uint geometryCount = wkbReader.ReadUInt32();
 
             for (int i = 0; i < geometryCount; i++)
-                compoundCurve.Geometries.Add(Read());
+                compoundCurve.Geometries.Add(Read<Curve>());
 
             return compoundCurve;
         }
