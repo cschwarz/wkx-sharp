@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.1</TargetFramework>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>0</Version>
     <Description>A WKT/WKB/EWKT/EWKB parser and serializer.</Description>
     <Authors>Christian Schwarz</Authors>
