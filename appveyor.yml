@@ -13,7 +13,7 @@ before_build:
 build_script:
 - dotnet build
 test_script:
-- dotnet test Wkx.Tests
+- dotnet test Wkx.Tests --no-build
 artifacts:
 - path: '**\*.nupkg'
 deploy:
