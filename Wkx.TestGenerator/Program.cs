@@ -82,7 +82,7 @@ namespace Wkx.TestGenerator
                 }
             }
 
-            File.WriteAllText("../../../Wkx.Tests/testdata.json", JsonConvert.SerializeObject(testOutputData, Formatting.Indented));
+            File.WriteAllText("../Wkx.Tests/testdata.json", JsonConvert.SerializeObject(testOutputData, Formatting.Indented));
         }
 
         private static string GenerateTestSql(GeometryFormat geometryFormat)

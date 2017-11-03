@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.12
+VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wkx", "Wkx\Wkx.csproj", "{E6795DCB-2AFA-4DCB-88D4-3F76E79E2BEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wkx", "Wkx\Wkx.csproj", "{E6795DCB-2AFA-4DCB-88D4-3F76E79E2BEC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2196C66D-497B-4EC3-9C32-FF846B4AE825}"
 	ProjectSection(SolutionItems) = preProject
