@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Wkx
 {
-    public class MultiCurve : GeometryCollection<Curve>, IEquatable<MultiCurve>
+    public class MultiCurve<T> : GeometryCollection<T>, IEquatable<MultiCurve<T>> where T : Curve
     {
         public override GeometryType GeometryType { get { return GeometryType.MultiCurve; } }
 
@@ -13,14 +13,27 @@ namespace Wkx
         {
         }
 
-        public MultiCurve(IEnumerable<Curve> geometries)
+        public MultiCurve(IEnumerable<T> geometries)
             : base(geometries)
         {
         }
 
-        public bool Equals(MultiCurve other)
+        public bool Equals(MultiCurve<T> other)
         {
             return Geometries.SequenceEqual(other.Geometries);
+        }
+    }
+
+    public class MultiCurve : MultiCurve<Curve>
+    {
+        public MultiCurve()
+              : base()
+        {
+        }
+
+        public MultiCurve(IEnumerable<Curve> geometries)
+            : base(geometries)
+        {
         }
     }
 }

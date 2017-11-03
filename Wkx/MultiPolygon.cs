@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Wkx
 {
-    public class MultiPolygon : MultiSurface, IEquatable<MultiPolygon>
+    public class MultiPolygon : MultiSurface<Polygon>, IEquatable<MultiPolygon>
     {
         public override GeometryType GeometryType { get { return GeometryType.MultiPolygon; } }
 
@@ -15,7 +15,7 @@ namespace Wkx
 
         public MultiPolygon(IEnumerable<Polygon> polygons)
             : base(polygons)
-        {
+        {            
         }
         
         public bool Equals(MultiPolygon other)

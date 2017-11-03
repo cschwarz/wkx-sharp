@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Wkx
 {
-    public class MultiLineString : MultiCurve, IEquatable<MultiLineString>
+    public class MultiLineString : MultiCurve<LineString>, IEquatable<MultiLineString>
     {
         public override GeometryType GeometryType { get { return GeometryType.MultiLineString; } }
 
