@@ -15,7 +15,11 @@ namespace Wkx.Tests
         {
             TestData = new TheoryData<TestCase>();
 
-            JObject testData = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(Path.Combine(Path.GetDirectoryName(typeof(WkxTest).GetTypeInfo().Assembly.Location), "../../../testdata.json")));
+            string testDataPath = "../../../testdata.json";
+            if (!File.Exists(testDataPath))
+                testDataPath = "../../../../testdata.json";
+
+            JObject testData = JsonConvert.DeserializeObject<JObject>(File.ReadAllText(testDataPath));
 
             foreach (var dimension in testData)
             {
