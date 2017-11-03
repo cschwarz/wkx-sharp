@@ -11,9 +11,9 @@ install:
 before_build:
 - ps: dotnet restore
 build_script:
-- ps: dotnet build Wkx.sln
+- ps: dotnet build
 test_script:
-- ps: dotnet test
+- ps: dotnet test Wkx.Tests
 deploy:
 - provider: NuGet
   api_key:
