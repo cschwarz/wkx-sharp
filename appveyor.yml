@@ -9,15 +9,11 @@ dotnet_csproj:
 install:
 - ps: .\scripts\update-version.ps1
 before_build:
-- ps: nuget restore
-build:
-  project: Wkx.sln
-  publish_nuget: true
-  publish_nuget_symbols: true
-  include_nuget_references: true
-  verbosity: minimal
-test:
-  assemblies: '**\*.Tests.dll'
+- ps: dotnet restore
+build_script:
+- ps: dotnet build Wkx.sln
+test_script:
+- ps: dotnet test
 deploy:
 - provider: NuGet
   api_key:
