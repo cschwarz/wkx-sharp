@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Wkx
 {
-    public class Tin : PolyhedralSurface, IEquatable<Tin>
+    public class Tin : PolyhedralSurface<Triangle>, IEquatable<Tin>
     {
         public override GeometryType GeometryType { get { return GeometryType.Tin; } }
         
@@ -12,7 +12,7 @@ namespace Wkx
         {
         }
 
-        public Tin(IEnumerable<Polygon> geometries)
+        public Tin(IEnumerable<Triangle> geometries)
             : base(geometries)
         {
         }

@@ -256,7 +256,7 @@ namespace Wkx
             uint geometryCount = wkbReader.ReadUInt32();
 
             for (int i = 0; i < geometryCount; i++)
-                tin.Geometries.Add(Read<Polygon>());
+                tin.Geometries.Add(Read<Triangle>());
 
             return tin;
         }
