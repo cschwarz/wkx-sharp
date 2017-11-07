@@ -17,6 +17,13 @@ artifacts:
 - path: '**\*.nupkg'
 deploy:
 - provider: NuGet
+  server: https://www.myget.org/F/wkx/api/v2/package
+  api_key:
+    secure: 1z5/yKOcTtb7iqitTKq4jfUED7+pQyJkHz5TryyO4hSAvjrKRThI5e0MRVBkxxzx
+  symbol_server: https://www.myget.org/F/wkx/api/v2/package
+  on:
+    branch: master
+- provider: NuGet
   api_key:
     secure: tGdmfvratYIxf1BjUhTaGbbbaSJjCq/G6c55mxgQQ5qUmu/Jfetzibf8uOKzqx9W
   on:
