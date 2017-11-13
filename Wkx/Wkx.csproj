@@ -11,4 +11,8 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/cschwarz/wkx-sharp/master/LICENSE</PackageLicenseUrl>
     <Company>Christian Schwarz</Company>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'portable-net45+win8+wpa81'">
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
 </Project>
