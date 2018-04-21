@@ -413,7 +413,12 @@ namespace Wkx
 
             do
             {
+                bool startsWithBracket = IsMatch("(");
+
                 coordinates.Add(MatchCoordinate(dimension));
+
+                if (startsWithBracket)
+                    ExpectGroupEnd();
             } while (IsMatch(","));
 
             return coordinates;

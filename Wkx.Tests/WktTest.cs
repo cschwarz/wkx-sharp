@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using Xunit;
@@ -22,6 +23,11 @@ namespace Wkx.Tests
             Assert.Equal(new Point(-1.2, -3.4), Geometry.Deserialize<WktSerializer>("POINT(-1.2 -3.4)"));
             Assert.Equal(new Point(-1.2, 3.4), Geometry.Deserialize<WktSerializer>("POINT(-1.2 3.4)"));
             Assert.Equal(new Point(1.2, -3.4), Geometry.Deserialize<WktSerializer>("POINT(1.2 -3.4)"));
+
+            Assert.Equal(new MultiPoint(new List<Point>() { new Point(1, 2), new Point(3, 4) }), Geometry.Deserialize<WktSerializer>("MULTIPOINT(1 2,3 4)"));
+            Assert.Equal(new MultiPoint(new List<Point>() { new Point(1, 2), new Point(3, 4) }), Geometry.Deserialize<WktSerializer>("MULTIPOINT(1 2, 3 4)"));
+            Assert.Equal(new MultiPoint(new List<Point>() { new Point(1, 2), new Point(3, 4) }), Geometry.Deserialize<WktSerializer>("MULTIPOINT((1 2),(3 4))"));
+            Assert.Equal(new MultiPoint(new List<Point>() { new Point(1, 2), new Point(3, 4) }), Geometry.Deserialize<WktSerializer>("MULTIPOINT((1 2), (3 4))"));
         }
 
         [Fact]
