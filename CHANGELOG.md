@@ -1,3 +1,9 @@
+## 0.4.1
+
+### Bug Fixes
+
+* Unsupported WKT Formats [#1](https://github.com/cschwarz/wkx-sharp/issues/1)
+
 ## 0.4.0
 
 ### Features
