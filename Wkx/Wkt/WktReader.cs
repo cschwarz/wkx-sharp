@@ -383,28 +383,36 @@ namespace Wkx
 
         protected virtual Point MatchCoordinate(Dimension dimension)
         {
-            Match match = null;
+            
+            Match match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)");
 
-            switch (dimension)
+            if (match.Success)
             {
-                case Dimension.Xy: match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)"); break;
-                case Dimension.Xyz:
-                case Dimension.Xym: match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)"); break;
-                case Dimension.Xyzm: match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)"); break;
-                default: throw new NotSupportedException(dimension.ToString());
+                dimension = Dimension.Xyzm;
+                return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[4].Value, CultureInfo.InvariantCulture));
             }
 
-            if (!match.Success)
+            match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)");
+
+            if (match.Success)
+            {
+                if (dimension == Dimension.Xym)
+                {
+                    dimension = Dimension.Xym;
+                    return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), null, double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
+                }
+                else
+                {
+                    dimension = Dimension.Xyz;
+                    return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
+                }
+            }
+
+            dimension = Dimension.Xy;
+            match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)");
+            if(!match.Success)
                 throw new Exception("Expected coordinates");
-
-            switch (dimension)
-            {
-                case Dimension.Xy: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture));
-                case Dimension.Xyz: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
-                case Dimension.Xym: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), null, double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
-                case Dimension.Xyzm: return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[4].Value, CultureInfo.InvariantCulture));
-                default: throw new NotSupportedException(dimension.ToString());
-            }
+            return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture));
         }
 
         protected IEnumerable<Point> MatchCoordinates(Dimension dimension)
