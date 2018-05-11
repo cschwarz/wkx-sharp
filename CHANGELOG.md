@@ -1,3 +1,9 @@
+## 0.4.2
+
+### Bug Fixes
+
+* WKT de-serialization fails when M and Z values are present [#2](https://github.com/cschwarz/wkx-sharp/issues/2)
+
 ## 0.4.1
 
 ### Bug Fixes
