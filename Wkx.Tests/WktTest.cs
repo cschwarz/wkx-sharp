@@ -12,6 +12,8 @@ namespace Wkx.Tests
         public void ParseWkt_ValidInput()
         {
             Assert.Equal(new Point(1, 2), Geometry.Deserialize<WktSerializer>("POINT(1 2)"));
+            Assert.Equal(new Point(1, 2, 3, 4), Geometry.Deserialize<WktSerializer>("POINT(1 2 3 4)"));
+            Assert.Equal(new Point(1, 2, 3), Geometry.Deserialize<WktSerializer>("POINT(1 2 3)"));
             Assert.Equal(new Point(1.2, 3.4), Geometry.Deserialize<WktSerializer>("POINT(1.2 3.4)"));
             Assert.Equal(new Point(1, 3.4), Geometry.Deserialize<WktSerializer>("POINT(1 3.4)"));
             Assert.Equal(new Point(1.2, 3), Geometry.Deserialize<WktSerializer>("POINT(1.2 3)"));
