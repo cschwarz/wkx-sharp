@@ -25,6 +25,11 @@ namespace Wkx.Tests
             Assert.Equal(new Point(-1.2, -3.4), Geometry.Deserialize<WktSerializer>("POINT(-1.2 -3.4)"));
             Assert.Equal(new Point(-1.2, 3.4), Geometry.Deserialize<WktSerializer>("POINT(-1.2 3.4)"));
             Assert.Equal(new Point(1.2, -3.4), Geometry.Deserialize<WktSerializer>("POINT(1.2 -3.4)"));
+            
+            Assert.Equal(new Point(12,34), Geometry.Deserialize<WktSerializer>("POINT(1.2e1 3.4e1)"));
+            Assert.Equal(new Point(0.12, 0.34), Geometry.Deserialize<WktSerializer>("POINT(1.2e-1 3.4e-1)"));
+            Assert.Equal(new Point(-12, -34), Geometry.Deserialize<WktSerializer>("POINT(-1.2e1 -3.4e1)"));
+            Assert.Equal(new Point(-0.12, -0.34), Geometry.Deserialize<WktSerializer>("POINT(-1.2e-1 -3.4e-1)"));
 
             Assert.Equal(new MultiPoint(new List<Point>() { new Point(1, 2), new Point(3, 4) }), Geometry.Deserialize<WktSerializer>("MULTIPOINT(1 2,3 4)"));
             Assert.Equal(new MultiPoint(new List<Point>() { new Point(1, 2), new Point(3, 4) }), Geometry.Deserialize<WktSerializer>("MULTIPOINT(1 2, 3 4)"));

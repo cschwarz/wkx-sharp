@@ -382,9 +382,8 @@ namespace Wkx
         }
 
         protected virtual Point MatchCoordinate(Dimension dimension)
-        {
-            
-            Match match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)");
+        {            
+            Match match = MatchRegex(@"^(\S*)\s+([^\s,]*)\s+([^\s,]*)\s+([^\s,)]*)");
 
             if (match.Success)
             {
@@ -392,7 +391,7 @@ namespace Wkx
                 return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[4].Value, CultureInfo.InvariantCulture));
             }
 
-            match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)\s+(-?\d+\.?\d*)");
+            match = MatchRegex(@"^(\S*)\s+([^\s,]*)\s+([^\s,)]*)");
 
             if (match.Success)
             {
@@ -409,7 +408,7 @@ namespace Wkx
             }
 
             dimension = Dimension.Xy;
-            match = MatchRegex(@"^(-?\d+\.?\d*)\s+(-?\d+\.?\d*)");
+            match = MatchRegex(@"^(\S*)\s+([^\s,)]*)");
             if(!match.Success)
                 throw new Exception("Expected coordinates");
             return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture));
