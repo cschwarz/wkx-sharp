@@ -22,5 +22,10 @@ namespace Wkx
         {
             return Geometries.SequenceEqual(other.Geometries);
         }
+
+        public override Geometry CurveToLine(double tolerance)
+        {
+            return this;
+        }
     }
 }

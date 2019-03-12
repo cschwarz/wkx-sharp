@@ -110,6 +110,13 @@ namespace Wkx.Tests
             SerializeTest(testCase, g => g.SerializeByteArray<EwkbSerializer>(), t => t.Ewkb.ToByteArray());
         }
 
+        [Theory]
+        [MemberData(nameof(TestData))]
+        public void CurveToLine(TestCase testCase)
+        {
+            Geometry.Deserialize<WktSerializer>(testCase.Data.Wkt).CurveToLine(1e-6);
+        }
+
         private static void ParseTest<T>(TestCase testCase, Func<TestCaseData, string> testProperty, bool isBinary)
             where T : IGeometrySerializer
         {

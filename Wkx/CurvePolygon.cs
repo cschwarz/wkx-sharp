@@ -62,5 +62,12 @@ namespace Wkx
         {
             return ExteriorRing.GetBoundingBox();
         }
+
+        public override Geometry CurveToLine(double tolerance)
+        {
+            LinearRing exteriorRing = new LinearRing((ExteriorRing.CurveToLine(tolerance) as LineString).Points);
+            IEnumerable<LinearRing> linearRings = InteriorRings.Select(r => new LinearRing((r.CurveToLine(tolerance) as LineString).Points));
+            return new Polygon(exteriorRing, linearRings);
+        }
     }
 }

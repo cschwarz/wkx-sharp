@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Wkx
 {
-    public class PolyhedralSurface<T> : Surface, IEquatable<PolyhedralSurface<T>> where T : Polygon
+    public abstract class PolyhedralSurface<T> : Surface, IEquatable<PolyhedralSurface<T>> where T : Polygon
     {
         public override GeometryType GeometryType { get { return GeometryType.PolyhedralSurface; } }
         public override bool IsEmpty { get { return !Geometries.Any(); } }
@@ -52,6 +52,11 @@ namespace Wkx
         public override BoundingBox GetBoundingBox()
         {
             return Geometries.Select(g => g.GetBoundingBox()).GetBoundingBox();
+        }
+
+        public override Geometry CurveToLine(double tolerance)
+        {
+            return new MultiPolygon(Geometries.Select(g => g.CurveToLine(tolerance) as Polygon));
         }
     }
 

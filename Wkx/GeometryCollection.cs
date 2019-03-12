@@ -53,12 +53,17 @@ namespace Wkx
         {
             return Geometries.Select(g => g.GetBoundingBox()).GetBoundingBox();
         }
+
+        public override Geometry CurveToLine(double tolerance)
+        {
+            return new GeometryCollection(Geometries.Select(g => g.CurveToLine(tolerance)));
+        }
     }
 
     public class GeometryCollection : GeometryCollection<Geometry>
     {
         public GeometryCollection()
-               :base()
+               : base()
         {
         }
 
@@ -68,4 +73,3 @@ namespace Wkx
         }
     }
 }
-

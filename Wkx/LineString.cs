@@ -53,5 +53,10 @@ namespace Wkx
         {
             return Points.GetBoundingBox();
         }
+
+        public override Geometry CurveToLine(double tolerance)
+        {
+            return this;
+        }
     }
 }

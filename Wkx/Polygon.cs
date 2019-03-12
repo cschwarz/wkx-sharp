@@ -65,5 +65,10 @@ namespace Wkx
         {
             return ExteriorRing.GetBoundingBox();
         }
+
+        public override Geometry CurveToLine(double tolerance)
+        {
+            return this;
+        }
     }
 }

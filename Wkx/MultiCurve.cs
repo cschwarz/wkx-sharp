@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Wkx
 {
-    public class MultiCurve<T> : GeometryCollection<T>, IEquatable<MultiCurve<T>> where T : Curve
+    public abstract class MultiCurve<T> : GeometryCollection<T>, IEquatable<MultiCurve<T>> where T : Curve
     {
         public override GeometryType GeometryType { get { return GeometryType.MultiCurve; } }
 
@@ -21,6 +21,11 @@ namespace Wkx
         public bool Equals(MultiCurve<T> other)
         {
             return Geometries.SequenceEqual(other.Geometries);
+        }
+
+        public override Geometry CurveToLine(double tolerance)
+        {
+            return new MultiLineString(Geometries.Select(g => g.CurveToLine(tolerance) as LineString));
         }
     }
 

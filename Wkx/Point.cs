@@ -63,5 +63,10 @@ namespace Wkx
         {
             return new BoundingBox(X.Value, Y.Value, X.Value, Y.Value);
         }
+
+        public override Geometry CurveToLine(double tolerance)
+        {
+            return this;
+        }
     }
 }

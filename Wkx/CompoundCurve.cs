@@ -50,5 +50,15 @@ namespace Wkx
         {
             throw new NotSupportedException();
         }
+
+        public override Geometry CurveToLine(double tolerance)
+        {
+            List<Point> points = new List<Point>();
+
+            foreach (Curve curve in Geometries)
+                points.AddRange((curve.CurveToLine(tolerance) as LineString).Points);
+
+            return new LineString(points.Distinct());
+        }
     }
 }

@@ -93,5 +93,12 @@ namespace Wkx
 
             return new BoundingBox(xMin, yMin, xMax, yMax);
         }
+
+        internal static double AngleBetween(this Point point, Point otherPoint)
+        {
+            double x = point.X.Value * otherPoint.X.Value + point.Y.Value * otherPoint.Y.Value;
+            double y = point.X.Value * otherPoint.Y.Value - otherPoint.X.Value * point.Y.Value;
+            return Math.Atan2(y, x) * (180.0 / Math.PI);
+        }
     }
 }

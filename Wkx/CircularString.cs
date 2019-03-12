@@ -53,5 +53,15 @@ namespace Wkx
         {
             return Points.GetBoundingBox();
         }
+
+        public override Geometry CurveToLine(double tolerance)
+        {
+            List<Point> points = new List<Point>();
+
+            for (int i = 0; i < Points.Count - 1; i += 2)
+                points.AddRange(MathUtil.LinearizeArc(Points[i], Points[i + 1], Points[i + 2], tolerance));
+
+            return new LineString(points.Distinct());
+        }
     }
 }

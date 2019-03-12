@@ -1,3 +1,9 @@
+## 0.5.0
+
+### Features
+
+* **Geometry**: add ```CurveToLine``` method
+
 ## 0.4.2
 
 ### Bug Fixes

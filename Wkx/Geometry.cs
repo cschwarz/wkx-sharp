@@ -14,6 +14,7 @@ namespace Wkx
 
         public abstract Point GetCenter();
         public abstract BoundingBox GetBoundingBox();
+        public abstract Geometry CurveToLine(double tolerance);
 
         public static Geometry Deserialize<T>(string value) where T : IGeometrySerializer
         {
