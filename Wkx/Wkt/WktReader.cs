@@ -382,36 +382,33 @@ namespace Wkx
         }
 
         protected virtual Point MatchCoordinate(Dimension dimension)
-        {            
-            Match match = MatchRegex(@"^(\S*)\s+([^\s,]*)\s+([^\s,]*)\s+([^\s,)]*)");
+        {
+            string coordinateValue = Peek(',', ')');
 
-            if (match.Success)
-            {
-                dimension = Dimension.Xyzm;
-                return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[4].Value, CultureInfo.InvariantCulture));
-            }
-
-            match = MatchRegex(@"^(\S*)\s+([^\s,]*)\s+([^\s,)]*)");
-
-            if (match.Success)
-            {
-                if (dimension == Dimension.Xym)
-                {
-                    dimension = Dimension.Xym;
-                    return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), null, double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
-                }
-                else
-                {
-                    dimension = Dimension.Xyz;
-                    return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
-                }
-            }
-
-            dimension = Dimension.Xy;
-            match = MatchRegex(@"^(\S*)\s+([^\s,)]*)");
-            if(!match.Success)
+            if (string.IsNullOrEmpty(coordinateValue))
                 throw new Exception("Expected coordinates");
-            return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture));
+
+            string[] coordinates = coordinateValue.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            switch (coordinates.Length)
+            {
+                case 2: return new Point(double.Parse(coordinates[0], CultureInfo.InvariantCulture), double.Parse(coordinates[1], CultureInfo.InvariantCulture));
+                case 3:
+                    {
+                        if (dimension == Dimension.Xym)
+                        {
+                            dimension = Dimension.Xym;
+                            return new Point(double.Parse(coordinates[0], CultureInfo.InvariantCulture), double.Parse(coordinates[1], CultureInfo.InvariantCulture), null, double.Parse(coordinates[2], CultureInfo.InvariantCulture));
+                        }
+                        else
+                        {
+                            dimension = Dimension.Xyz;
+                            return new Point(double.Parse(coordinates[0], CultureInfo.InvariantCulture), double.Parse(coordinates[1], CultureInfo.InvariantCulture), double.Parse(coordinates[2], CultureInfo.InvariantCulture));
+                        }
+                    }
+                case 4: dimension = Dimension.Xyzm; return new Point(double.Parse(coordinates[0], CultureInfo.InvariantCulture), double.Parse(coordinates[1], CultureInfo.InvariantCulture), double.Parse(coordinates[2], CultureInfo.InvariantCulture), double.Parse(coordinates[3], CultureInfo.InvariantCulture));
+                default: throw new Exception("Expected coordinates");
+            }
         }
 
         protected IEnumerable<Point> MatchCoordinates(Dimension dimension)
@@ -458,6 +455,32 @@ namespace Wkx
             return null;
         }
 
+        protected string Peek(params char[] tokens)
+        {
+            SkipWhitespaces();
+
+            int tokenPosition = position;
+            bool foundToken = false;
+
+            do
+            {
+                for (int i = 0; i < tokens.Length; i++)
+                {
+                    if (tokenPosition + 1 < value.Length && value[tokenPosition + 1] == tokens[i])
+                    {
+                        foundToken = true;
+                        break;
+                    }
+                }
+
+                tokenPosition++;
+            } while (!foundToken && tokenPosition < value.Length);
+
+            string peekValue = value.Substring(position, tokenPosition - position);
+            position = tokenPosition;
+            return peekValue;
+        }
+
         protected Match MatchRegex(params string[] tokens)
         {
             SkipWhitespaces();
@@ -484,7 +507,7 @@ namespace Wkx
 
             for (int i = 0; i < tokens.Length; i++)
             {
-                if (value.IndexOf(tokens[i], position) == position)
+                if (position + tokens[i].Length <= value.Length && value.Substring(position, tokens[i].Length) == tokens[i])
                 {
                     position += tokens[i].Length;
                     return true;

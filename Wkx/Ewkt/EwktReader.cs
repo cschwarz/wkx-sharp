@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Wkx
@@ -37,33 +38,32 @@ namespace Wkx
 
         protected override Point MatchCoordinate(Dimension dimension)
         {
-            Match match = MatchRegex(@"^(\S*)\s+([^\s,]*)\s+([^\s,]*)\s+([^\s,)]*)");
+            string coordinateValue = Peek(',', ')');
 
-            if (match.Success)
+            if (string.IsNullOrEmpty(coordinateValue))
+                throw new Exception("Expected coordinates");
+
+            string[] coordinates = coordinateValue.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            switch (coordinates.Length)
             {
-                geometryDimension = Dimension.Xyzm;
-                return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[4].Value, CultureInfo.InvariantCulture));
+                case 2: return new Point(double.Parse(coordinates[0], CultureInfo.InvariantCulture), double.Parse(coordinates[1], CultureInfo.InvariantCulture));
+                case 3:
+                    {
+                        if (dimension == Dimension.Xym)
+                        {
+                            geometryDimension = Dimension.Xym;
+                            return new Point(double.Parse(coordinates[0], CultureInfo.InvariantCulture), double.Parse(coordinates[1], CultureInfo.InvariantCulture), null, double.Parse(coordinates[2], CultureInfo.InvariantCulture));
+                        }
+                        else
+                        {
+                            geometryDimension = Dimension.Xyz;
+                            return new Point(double.Parse(coordinates[0], CultureInfo.InvariantCulture), double.Parse(coordinates[1], CultureInfo.InvariantCulture), double.Parse(coordinates[2], CultureInfo.InvariantCulture));
+                        }
+                    }
+                case 4: geometryDimension = Dimension.Xyzm; return new Point(double.Parse(coordinates[0], CultureInfo.InvariantCulture), double.Parse(coordinates[1], CultureInfo.InvariantCulture), double.Parse(coordinates[2], CultureInfo.InvariantCulture), double.Parse(coordinates[3], CultureInfo.InvariantCulture));
+                default: throw new Exception("Expected coordinates");
             }
-
-            match = MatchRegex(@"^(\S*)\s+([^\s,]*)\s+([^\s,)]*)");
-
-            if (match.Success)
-            {
-                if (dimension == Dimension.Xym)
-                {
-                    geometryDimension = Dimension.Xym;
-                    return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), null, double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
-                }
-                else
-                {
-                    geometryDimension = Dimension.Xyz;
-                    return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[3].Value, CultureInfo.InvariantCulture));
-                }
-            }
-
-            geometryDimension = Dimension.Xy;
-            match = MatchRegex(@"^(\S*)\s+([^\s,)]*)");
-            return new Point(double.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture), double.Parse(match.Groups[2].Value, CultureInfo.InvariantCulture));
         }
     }
 }
