@@ -5,6 +5,8 @@ namespace Wkx
 {
     internal class WkbWriter
     {
+        protected static readonly byte[] doubleNaN = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0x7f };
+
         protected BinaryWriter wkbWriter;
 
         internal byte[] Write(Geometry geometry)
@@ -63,14 +65,22 @@ namespace Wkx
 
         private void WritePoint(Point point, Dimension dimension)
         {
-            wkbWriter.Write(point.X ?? -double.NaN);
-            wkbWriter.Write(point.Y ?? -double.NaN);
+            WriteDouble(point.X);
+            WriteDouble(point.Y);
 
             if (dimension == Dimension.Xyz || dimension == Dimension.Xyzm)
-                wkbWriter.Write(point.Z ?? -double.NaN);
+                WriteDouble(point.Z);
 
             if (dimension == Dimension.Xym || dimension == Dimension.Xyzm)
-                wkbWriter.Write(point.M ?? -double.NaN);
+                WriteDouble(point.M);
+        }
+
+        private void WriteDouble(double? value)
+        {
+            if (value.HasValue)
+                wkbWriter.Write(value.Value);
+            else
+                wkbWriter.Write(doubleNaN);
         }
 
         private void WriteLineString(LineString lineString)
