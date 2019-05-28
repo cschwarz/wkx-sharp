@@ -1,3 +1,10 @@
+## 0.5.1
+
+### Bug Fixes
+
+* Improve WKT and EWKT reading performance
+* Fix serialization difference between .NET Core and .NET Framework with double.NaN values
+
 ## 0.5.0
 
 ### Features
