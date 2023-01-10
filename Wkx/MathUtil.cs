@@ -99,5 +99,25 @@ namespace Wkx
             Point vc = new Point(endPoint.X.Value - cx, endPoint.Y.Value - cy);
             return va.AngleBetween(vb) + vb.AngleBetween(vc);
         }
+
+        internal static double? Min(double? a, double? b)
+        {
+            if (a == null || b == null)
+            {
+                return a ?? b;
+            }
+
+            return Math.Min(a.Value, b.Value);
+        }
+
+        internal static double? Max(double? a, double? b)
+        {
+            if (a == null || b == null)
+            {
+                return a ?? b;
+            }
+
+            return Math.Max(a.Value, b.Value);
+        }
     }
 }

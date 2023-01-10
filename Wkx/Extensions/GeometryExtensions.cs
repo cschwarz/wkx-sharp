@@ -62,36 +62,55 @@ namespace Wkx
         {
             double xMin = double.MaxValue;
             double yMin = double.MaxValue;
+            double? zMin = null;
             double xMax = -double.MaxValue;
             double yMax = -double.MaxValue;
+            double? zMax = null;
 
             foreach (Point point in points)
             {
                 xMin = Math.Min(xMin, point.X.Value);
                 yMin = Math.Min(yMin, point.Y.Value);
+                zMin = MathUtil.Min(zMin, point.Z);
                 xMax = Math.Max(xMax, point.X.Value);
                 yMax = Math.Max(yMax, point.Y.Value);
+                zMax = MathUtil.Max(zMax, point.Z);
             }
 
-            return new BoundingBox(xMin, yMin, xMax, yMax);
+            return new BoundingBox(xMin, yMin, zMin, xMax, yMax, zMax);
         }
 
         internal static BoundingBox GetBoundingBox(this IEnumerable<BoundingBox> boundingBoxes)
         {
             double xMin = double.MaxValue;
             double yMin = double.MaxValue;
+            double? zMin = null;
             double xMax = -double.MaxValue;
             double yMax = -double.MaxValue;
+            double? zMax = null;
 
-            foreach (BoundingBox boundingBox in boundingBoxes)
+            var enumerator = boundingBoxes.GetEnumerator();
+            if (enumerator.MoveNext())
             {
-                xMin = Math.Min(xMin, boundingBox.XMin);
-                yMin = Math.Min(yMin, boundingBox.YMin);
-                xMax = Math.Max(xMax, boundingBox.XMax);
-                yMax = Math.Max(yMax, boundingBox.YMax);
+                var dimension = enumerator.Current.Dimension;
+                do
+                {
+                    var boundingBox = enumerator.Current;
+                    if (dimension != boundingBox.Dimension)
+                    {
+                        throw new InvalidOperationException("Bounding box Z dimension inconsistent");
+                    }
+
+                    xMin = Math.Min(xMin, boundingBox.XMin);
+                    yMin = Math.Min(yMin, boundingBox.YMin);
+                    zMin = MathUtil.Min(zMin, boundingBox.ZMin);
+                    xMax = Math.Max(xMax, boundingBox.XMax);
+                    yMax = Math.Max(yMax, boundingBox.YMax);
+                    zMax = MathUtil.Max(zMax, boundingBox.ZMax);
+                } while (enumerator.MoveNext());
             }
 
-            return new BoundingBox(xMin, yMin, xMax, yMax);
+            return new BoundingBox(xMin, yMin, zMin, xMax, yMax, zMax);
         }
 
         internal static double AngleBetween(this Point point, Point otherPoint)
