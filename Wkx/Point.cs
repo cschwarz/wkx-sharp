@@ -61,7 +61,7 @@ namespace Wkx
 
         public override BoundingBox GetBoundingBox()
         {
-            return new BoundingBox(X.Value, Y.Value, X.Value, Y.Value);
+            return new BoundingBox(X.Value, Y.Value, Z, X.Value, Y.Value, Z);
         }
 
         public override Geometry CurveToLine(double tolerance)
